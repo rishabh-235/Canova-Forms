@@ -1,0 +1,76 @@
+.homepage-container {
+    padding: 8px 8px 0px 0px;
+    width: 83.5vw;
+    height: 88vh;
+}
+
+.homepage-title{
+    font-size: 38px;
+    font-weight: 300;
+    border: 1.5px solid #696969;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    width: 100%;
+    padding: 25px 0px 10px 38px;
+}
+
+.homepage-content{
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    border-left: 1.5px solid #696969;
+    border-right: 1.5px solid #696969;
+    padding: 2.5rem 2.5rem 0px 2.5rem;
+    gap: 1rem;
+}
+
+.create-project-section{
+    display: flex;
+    gap: 2.3rem;
+}
+
+.create-project-button {
+    width: 400px;
+    height: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    gap: 6px;
+    font-size: 14px;
+}
+
+.create-project-button div{
+    background-color: #2f96f1ff;
+    border-radius: 16px;
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.create-project-description {
+    font-size: 13px;
+    font-weight: 500;
+    color: #696969;
+}
+
+.recent-works-section{
+    display: flex;
+    width: 100%;
+    gap: 5px;
+    flex-direction: column;
+}
+
+.form-list {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    gap: 22px;
+    padding: 15px;
+}

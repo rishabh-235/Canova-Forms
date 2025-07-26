@@ -1,0 +1,89 @@
+.form-editor-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    flex-basis: 20%;
+    height: 100%;
+    padding: 45px 20px 10px 20px;
+    background-color: #c9def3ff;
+    gap: 30px;
+}
+
+.form-editor-button-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.form-editor-button-list button {
+    width: 215px;
+    height: 43px;
+    background-color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 16px;
+}
+
+.form-editor-button-list p {
+    flex-basis: 50%;
+    text-align: start;
+}
+
+.form-editor-next-button {
+    width: 129px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #000000ff;
+    border: none;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form-editor-color-options {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 220px;
+    font-size: 15px;
+}
+
+.form-editor-color-options div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.form-editor-color-options div div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background-color: #ffffff;
+    height: 40px;
+    padding: 0 15px;
+    border-radius: 12px;
+}
+
+.form-editor-color-label {
+    font-size: 14px;
+    font-weight: 400;
+    color: #252525ff;
+    font-style: italic;
+}

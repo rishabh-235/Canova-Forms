@@ -1,0 +1,86 @@
+.avatar-section {
+    padding: 0px 100px 20px 100px;
+    display: flex;
+
+}
+
+.avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background-color: #7ce4b3ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.avatar-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 15px;
+    font-size: 0.95rem;
+    gap: 2px;
+}
+
+.avatar-text p:nth-child(2) {
+    color: #6e6e6eff;
+} 
+
+.profile-details-section {
+    padding: 0px 120px 20px 120px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    font-size: 0.9rem;
+}
+
+.profile-details-section div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #4B5563;
+}
+
+.profile-details-section span {
+    color: #1F2937;
+}
+
+.profile-details-section input {
+    height: 36px;
+    border-radius: 8px;
+    border: none;
+    background-color: transparent;
+    padding: 0 10px;
+    font-size: 0.9rem;
+}
+
+.profile-actions-section {
+    padding: 0px 120px 20px 120px;
+    display: flex;
+    justify-content: end;
+    gap: 20px;
+}
+
+.profile-save-button {
+    width: 144px;
+    height: 36px;
+    background-color: #2489FF;
+    color: #ffffff;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}
+
+.profile-discard-button {
+    width: 144px;
+    height: 36px;
+    background-color: #898989;
+    color: #ffffff;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+}

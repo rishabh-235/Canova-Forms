@@ -1,0 +1,37 @@
+.project-analysis-section{
+    display: flex;
+    justify-content: space-around;
+}
+
+.line-chart-container{
+    width: 850px;
+    height: 330px;
+}
+
+.project-analysis-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.view-analysis-card {
+    width: 267px;
+    height: 151px;
+    background-color: #e9eaffff;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    padding: 30px 30px;
+    gap: 5px;
+}
+
+.view-analysis-card p{
+    font-size: 12px;
+}
+
+.view-analysis-card h3 {
+    font-size: 22px;
+    font-weight: 600;
+    color: #000000;
+}

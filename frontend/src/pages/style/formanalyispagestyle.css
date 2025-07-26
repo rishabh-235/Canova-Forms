@@ -1,0 +1,35 @@
+.form-analysis-section {
+    padding: 0px 30px;
+}
+
+.form-question-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    overflow-y: auto;
+    height: 78vh;
+}
+
+.form-question-list div {
+    padding-top: 30px;
+    width: 663px;
+    height: 200px;
+}
+
+.form-analysis-save-button {
+    position: absolute;
+    top: 28px;
+    right: 30px;
+    width: 131px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000000;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+}

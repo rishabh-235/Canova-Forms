@@ -1,0 +1,179 @@
+.publish-card-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.publish-card {
+  width: 400px;
+  min-height: 355px;
+  max-height: 90vh;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+}
+
+.publish-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.publish-card-header div {
+  border: 2px solid black;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+}
+
+.publish-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 30px;
+}
+
+.publish-card-body div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  margin-top: 7px;
+  position: relative;
+}
+
+.publish-card-body label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #000000;
+}
+
+.publish-card-body input {
+  width: 100%;
+  height: 45px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  padding: 0 10px;
+  font-size: 14px;
+  background-color: #e7eef5;
+  flex-shrink: 0;
+}
+
+.publish-button {
+  width: 100%;
+  height: 45px;
+  background-color: #69b5f8;
+  border-radius: 6px;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.manage-button {
+  color: #69b5f8;
+  font-size: 14px;
+  font-weight: 400;
+  position: absolute;
+  top: 2.2rem;
+  left: 17.2rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.change-button {
+  color: #69b5f8;
+  font-size: 14px;
+  font-weight: 400;
+  position: absolute;
+  top: 2.2rem;
+  left: 17.2rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.manage-share-inputs-list {
+  overflow-y: auto;
+  max-height: 23vh;
+  padding: 5px 0px;
+}
+
+.manage-share-container div {
+  margin: 0;
+}
+
+.add-mails-button {
+  background-color: #e7eef5;
+  border-radius: 12px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  cursor: pointer;
+  border: 1px solid #ccc;
+  font-weight: 500;
+}
+
+.owner-label {
+  color: #69b5f8;
+  font-size: 14px;
+  font-weight: 400;
+  position: absolute;
+  top: 1.15rem;
+  left: 17.2rem;
+  background-color: transparent;
+  border: none;
+}
+
+.edit-email-button {
+  color: #69b5f8;
+  font-size: 14px;
+  font-weight: 400;
+  position: absolute;
+  top: 0.85rem;
+  left: 17.2rem;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.edit-options {
+    position: absolute;
+    top: 2.2rem;
+    left: 15rem;
+    gap: 10px;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    background-color: #fff;
+    width: 90px;
+    padding: 10px;
+}
+
+.edit-options li {
+    cursor: pointer;
+}

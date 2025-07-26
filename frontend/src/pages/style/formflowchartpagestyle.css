@@ -1,0 +1,12 @@
+.flow-chart-next-button {
+    width: 129px;
+    height: 40px;
+    position: absolute;
+    bottom: 40px;
+    right: 70px;
+    background-color: #000000ff;
+    color: #ffffff;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+}

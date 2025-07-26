@@ -1,0 +1,13 @@
+.project-create-form-button {
+    width: 200px;
+    height: 40px;
+    background-color: #000000;
+    color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    cursor: pointer;
+}

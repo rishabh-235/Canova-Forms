@@ -1,0 +1,191 @@
+.radio-type-container,
+.checkbox-type-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.radio-option,
+.checkbox-option {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+}
+
+.radio-option input {
+  appearance: none;
+  background-color: #f0f4f8ff;
+  border: 1px solid #8ab3dd;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  accent-color: #8ab3dd;
+}
+
+.radio-option input:checked {
+  background-color: #8ab3dd;
+  border: 1px solid #8ab3dd;
+  outline: 2px solid #8ab3dd;
+  outline-offset: 2px;
+}
+
+.checkbox-option input {
+  appearance: none;
+  background-color: #f0f4f8ff;
+  border: 1px solid #8ab3dd;
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  accent-color: #8ab3dd;
+}
+
+.checkbox-option input:checked {
+  background-color: #8ab3dd;
+  border: 1px solid #8ab3dd;
+  outline: 2px solid #8ab3dd;
+  outline-offset: 2px;
+  position: relative;
+}
+
+.checkbox-option input:checked::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 2px;
+  width: 6px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 3px 3px 0; /* Increased border width for boldness */
+  transform: rotate(45deg) scale(0.9); /* Slightly larger for emphasis */
+  pointer-events: none;
+  display: block;
+  box-sizing: border-box;
+  border-radius: 1px;
+}
+
+.short-type-input,
+.long-type-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 20px;
+  border-radius: 12px;
+  border: none;
+  background-color: #e7eef5;
+  font-size: 16px;
+  color: #333333;
+  outline: none;
+  font-size: 15px;
+}
+
+.long-type-input {
+  padding: 15px 20px;
+  height: 100px;
+}
+
+.rating-type-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.start-icon-container {
+  display: flex;
+  gap: 3px;
+}
+
+.rating-type-container svg {
+  cursor: pointer;
+}
+
+.rating-text-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-basis: 30%;
+  font-size: 15px;
+  font-weight: 500;
+  gap: 10px;
+}
+
+.star-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 28px;
+  border-radius: 10;
+  background-color: #e7eef5;
+  color: #333333;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.linear-scale-type-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.linear-scale-type-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.linear-scale-type-header p {
+  width: 270px;
+  height: 40px;
+  font-size: 15px;
+  font-style: italic;
+  background-color: #e7eef5;
+  border-radius: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.linear-scale-type-container input {
+  width: 430px;
+  height: 7px;
+  margin-top: 10px;
+  color: #69b5f8;
+}
+
+.date-type-container {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  position: relative;
+}
+
+.date-type-container svg {
+  position: absolute;
+  left: 9.6rem;
+  top: 0.2rem;
+}
+
+.date-type-container input {
+  appearance: none;
+  background-color: transparent;
+  font-size: 15px;
+  font-weight: 300;
+  border: none;
+  text-transform: uppercase;
+  padding: 0px 10px;
+  width: 180px;
+  outline: none;
+}
+
+.date-type-container input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  background: url("path/to/your/calendar-icon.svg") no-repeat center center;
+  background-size: contain;
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  position: relative;
+  left: 10px;
+}

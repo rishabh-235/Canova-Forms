@@ -1,0 +1,109 @@
+.signin-page-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: #BFDAF5;
+    padding: 0px 50px;
+    gap: 20px;
+}
+
+.signin-page-logo{
+    position: absolute;
+    top: 3.5rem;
+    left: 3.5rem;
+}
+
+.signin-card-container {
+    width: 400px;
+    height: auto;
+    background-color: #FFFFFF;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    padding: 30px 62px;
+    gap: 25px;
+}
+
+.signin-card-header h3 {
+    font-size: 26px;
+    font-weight: 500;
+    margin-bottom: 15px;
+}
+
+.signin-card-header p {
+    font-size: 13px;
+    color: #313957;
+    margin-bottom: 6px;
+}
+
+.signin-card-body {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 16px;
+}
+
+.signin-card-body div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.signin-card-body div label {
+    font-size: 13px;
+    color: #313957;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.signin-card-body div input {
+    width: 100%;
+    height: 35px;
+    padding: 0 10px;
+    border-radius: 10px;
+    border: 1px solid #D1D5DB;
+    font-size: 14px;
+    background-color: #F9FAFB;
+}
+
+.signin-card-body div input::placeholder {
+    font-size: 12px;
+    color: #8897AD;
+}
+
+.signin-card-body div a {
+    width: 100%;
+    text-align: right;
+    font-size: 12px;
+    color: #1E4AE9;
+    cursor: pointer;
+}
+
+.signin-button {
+    width: 100%;
+    height: 35px;
+    background-color: #69B5F8;
+    color: #FFFFFF;
+    border-radius: 10px;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.signin-card-footer p{
+    font-size: 13px;
+    color: #313957;
+}
+
+.signin-card-footer a {
+    color: #1E4AE9;
+    cursor: pointer;
+}
