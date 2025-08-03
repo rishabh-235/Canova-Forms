@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import MainPage from "./pages/MainPage";
 import HomePage from "./pages/HomePage";
 import AnalysisPage from "./pages/AnalysisPages/AnalysisPage";
@@ -20,40 +25,96 @@ import CreateFormMainPage from "./pages/CreateFormPages/CreateFormMainPage";
 import FormFlowChartPage from "./pages/CreateFormPages/FormFlowChartPage";
 import FormPreviewPage from "./pages/CreateFormPages/FormPreviewPage";
 import ProtectedRoute from "./ProtectedRoute";
-
+import { useDispatch } from "react-redux";
+import { useGetCurrentUserQuery } from "./redux/slices/api/user.api";
+import { useEffect } from "react";
+import {
+  setUser,
+  signout,
+  setInitialized,
+} from "./redux/slices/state/user.stateslice";
+import ResponseForm from "./pages/ResponsePages/ResponseForm";
+import ResponseMainPage from "./pages/ResponsePages/ResponseMainPage";
+function AppContent() {
+  const location = useLocation();
+  const dispatch = useDispatch();
+  const isPublicRoute =
+    location.pathname.startsWith("/response-form") ||
+    location.pathname === "/signin" ||
+    location.pathname === "/signup" ||
+    location.pathname.startsWith("/forgot-password");
+  const { data, error, isLoading } = useGetCurrentUserQuery(undefined, {
+    skip: isPublicRoute,
+  });
+  useEffect(() => {
+    if (isPublicRoute) {
+      dispatch(setInitialized());
+    } else if (data?.success && data?.user) {
+      dispatch(setUser(data.user));
+    } else if (error) {
+      dispatch(signout());
+    } else if (!isLoading && !data && !error) {
+      dispatch(setInitialized());
+    }
+  }, [data, error, isLoading, dispatch, isPublicRoute]);
+  useEffect(() => {
+    if (isPublicRoute) {
+      dispatch(setInitialized());
+    } else if (data?.success && data?.user) {
+      dispatch(setUser(data.user));
+    } else if (error) {
+      dispatch(signout());
+    } else if (!isLoading && !data && !error) {
+      dispatch(setInitialized());
+    }
+  }, [data, error, isLoading, dispatch, isPublicRoute]);
+  return (
+    <Routes>
+      <Route element={<ProtectedRoute />}>
+        <Route path="/" element={<MainPage />}>
+          <Route index element={<HomePage />} />
+          <Route path="analysis" element={<AnalysisPage />} />
+          <Route path="analysis/projects" element={<ProjectAnalysisPage />} />
+          <Route path="analysis/forms" element={<FormAnalysisPage />} />
+          <Route path="projects" element={<ProjectPage />} />
+          <Route
+            path="projects/:projectname/:projectid"
+            element={<FormListPage />}
+          />
+        </Route>
+        <Route path="/profile" element={<ProfileMainPage />}>
+          <Route index element={<ProfilePage />} />
+          <Route path="settings" element={<SettingsPage />} />
+        </Route>
+        <Route path="/create-form/:id" element={<CreateFormMainPage />}>
+          <Route path=":pageNo" element={<CreateFormPage />} />
+          <Route path="flow-chart" element={<FormFlowChartPage />} />
+          <Route path="preview" element={<FormPreviewPage />} />
+        </Route>
+      </Route>
+      <Route path="/forgot-password" element={<ForgetPasswordPage />}>
+        <Route index element={<SendEmailPage />} />
+        <Route path="verify-otp" element={<EnterOTPPage />} />
+        <Route path="create-password" element={<CreatePasswordPage />} />
+      </Route>
+      <Route path="/signin" element={<SigninPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route
+        path="/response-form/:responseFormId"
+        element={<ResponseMainPage />}
+      >
+        <Route path=":pageId" element={<ResponseForm />} />
+      </Route>
+    </Routes>
+  );
+}
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route element={<ProtectedRoute isAuthenticated={true} />}>
-          <Route path="/" element={<MainPage />}>
-            <Route index element={<HomePage />} />
-            <Route path="analysis" element={<AnalysisPage />} />
-            <Route path="analysis/projects" element={<ProjectAnalysisPage />} />
-            <Route path="analysis/forms" element={<FormAnalysisPage />} />
-            <Route path="projects" element={<ProjectPage />} />
-            <Route path="projects/forms" element={<FormListPage />} />
-          </Route>
-          <Route path="/profile" element={<ProfileMainPage />}>
-            <Route index element={<ProfilePage />} />
-            <Route path="settings" element={<SettingsPage />} />
-          </Route>
-          <Route path="/create-form" element={<CreateFormMainPage />}>
-            <Route path=":id" element={<CreateFormPage />} />
-            <Route path="flow-chart" element={<FormFlowChartPage />} />
-          </Route>
-        </Route>
-        <Route path="/forget-password" element={<ForgetPasswordPage />}>
-          <Route index element={<SendEmailPage />} />
-          <Route path="verify-otp" element={<EnterOTPPage />} />
-          <Route path="create-password" element={<CreatePasswordPage />} />
-        </Route>
-        <Route path="/preview" element={<FormPreviewPage />} />
-        <Route path="/signin" element={<SigninPage />} />
-        <Route path="/signup" element={<SignupPage />} />
-      </Routes>
+      <AppContent />
     </Router>
   );
 }
-
 export default App;
+
+

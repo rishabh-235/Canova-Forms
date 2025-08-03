@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 function EnterOTPPage() {
   return (
     <div className="signin-card-container">
@@ -14,11 +14,12 @@ function EnterOTPPage() {
           <label htmlFor="otp">OTP</label>
           <input type="text" id="otp" placeholder="XXXX65" />
         </div>
-
-        <button className="signin-button">Confirm</button>
+        <Link to="/forgot-password/create-password" className="signin-button">Confirm</Link>
       </div>
     </div>
   );
 }
-
 export default EnterOTPPage;
+
+
+

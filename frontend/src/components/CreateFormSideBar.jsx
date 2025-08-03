@@ -1,7 +1,12 @@
-import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
-
+import { addPage } from "../redux/slices/state/formstateslice";
 function CreateFormSideBar() {
+  const { currentForm} = useSelector((state) => state.form);
+  const dispatch = useDispatch();
+  const handleAddNewPage = () => {
+    dispatch(addPage());
+  }
   return (
     <div className="sidebar-container">
       <Link to={"/"} className="logo-container">
@@ -28,39 +33,20 @@ function CreateFormSideBar() {
             strokeLinejoin="round"
           />
         </svg>
-
         <p className="logo-text">CANOVA</p>
       </Link>
-
       <div className="navigation-container">
-        <NavLink
-          to={"/"}
-          className={({ isActive }) =>
-            isActive ? `nav-item active-link` : `nav-item`
-          }
+        {
+          currentForm?.pages?.map((page, index) => (<Link
+          to={`/create-form/${currentForm?._id}/${page.pageNumber}`}
+          key={index}
+          className="page-button"
+          style={{display: "flex", alignItems: "center", justifyContent: "start", paddingLeft: "20px"}}
         >
-          <p>Page 01</p>
-        </NavLink>
-
-        <NavLink
-          to={"/analysis"}
-          className={({ isActive }) =>
-            isActive ? `nav-item active-link` : `nav-item`
-          }
-        >
-          <p>Page 02</p>
-        </NavLink>
-
-        <NavLink
-          to={"/projects"}
-          className={({ isActive }) =>
-            isActive ? `nav-item active-link` : `nav-item`
-          }
-        >
-          <p>Page 03</p>
-        </NavLink>
-
-        <button className="add-new-page-button">
+          Page {index + 1}
+        </Link>))
+        }
+        <button onClick={handleAddNewPage} className="add-new-page-button">
           <svg
             width="12"
             height="12"
@@ -77,7 +63,6 @@ function CreateFormSideBar() {
           </svg>
           Add New Page
         </button>
-
         <NavLink
           to={"/profile"}
           className={({ isActive }) =>
@@ -102,12 +87,13 @@ function CreateFormSideBar() {
               fill="black"
             />
           </svg>
-
           <p>Profile</p>
         </NavLink>
       </div>
     </div>
   );
 }
-
 export default CreateFormSideBar;
+
+
+

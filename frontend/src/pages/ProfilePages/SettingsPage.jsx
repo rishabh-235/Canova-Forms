@@ -1,6 +1,5 @@
 import React from "react";
 import "../style/settingspagestyle.css";
-
 function SettingsPage() {
   return (
     <div className="homepage-container">
@@ -31,5 +30,7 @@ function SettingsPage() {
     </div>
   );
 }
-
 export default SettingsPage;
+
+
+

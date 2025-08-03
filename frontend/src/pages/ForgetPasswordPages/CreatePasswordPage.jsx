@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 function CreatePasswordPage() {
   return (
     <div className="signin-card-container">
@@ -17,7 +16,6 @@ function CreatePasswordPage() {
             placeholder="Enter new password"
           />
         </div>
-
         <div>
           <label htmlFor="confirm-password">Confirm Password</label>
           <input
@@ -26,15 +24,15 @@ function CreatePasswordPage() {
             placeholder="Confirm new password"
           />
         </div>
-
         <div>
           <Link to="/forgot-password">Cancel</Link>
         </div>
-
         <button className="signin-button">Reset Password</button>
       </div>
     </div>
   );
 }
-
 export default CreatePasswordPage;
+
+
+

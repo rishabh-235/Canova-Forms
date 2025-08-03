@@ -1,0 +1,116 @@
+.condition-card {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(3px);
+  z-index: 1000;
+  padding: 50px 90px;
+}
+
+.condition-card-container {
+  width: 400px;
+  height: 355px;
+  max-height: 580px;
+  background-color: #fff;
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  padding: 25px;
+}
+
+.condition-card-header {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.condition-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 5px;
+}
+
+.condition-card-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-top: 8px;
+    margin-bottom: 2px;
+}
+
+.condition-card-description {
+    margin-bottom: 35px;
+    font-size: 13px;
+}
+
+.list-true {
+    width: 100%;
+    height: 45px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #E7EEF5;
+    padding: 0 10px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.list-true option {
+    background-color: #ffffff;
+}
+
+.list-true option:hover {
+    background-color: #f0f0f0;
+}
+
+.list-false {
+    width: 100%;
+    height: 45px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #E7EEF5;
+    padding: 0 10px;
+    font-size: 14px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+.condition-card-body label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #000000;
+}
+
+
+.condition-card-footer {
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.condition-card-continue-button{
+    background-color: #000000;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px;
+    cursor: pointer;
+    width: 150px;
+}
+
+.condition-card-continue-button:hover {
+    background-color: #333333;
+}

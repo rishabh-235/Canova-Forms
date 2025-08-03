@@ -8,34 +8,52 @@ import CheckboxType from "./QuestionTypeComponents/CheckboxType";
 import RatingType from "./QuestionTypeComponents/RatingType";
 import LinearScaleType from "./QuestionTypeComponents/LinearScaleType";
 import DateType from "./QuestionTypeComponents/DateType";
-
+import {
+  changeQuestionType,
+  changeQuestionText,
+  removeQuestion,
+} from "../redux/slices/state/formstateslice";
+import { useDispatch } from "react-redux";
+import DropdownType from "./QuestionTypeComponents/DropdownType";
+import { useParams } from "react-router-dom";
 function QuestionCard({
   question_index,
   section_index,
   question_no,
   focusQuestionInput,
-  question_text,
-  question_type,
-  handleChangeQuestionType,
-  handleChangeQuestionText,
-  questionImage,
-  questionVideo,
+  question,
 }) {
   const [showOptions, setShowOptions] = useState(false);
-
+  const dispatch = useDispatch();
+  const { pageNo } = useParams();
+  const question_text = question.questionText;
+  const question_type = question.type;
+  const questionImage = question.image;
+  const questionVideo = question.video;
+  const options = question.options;
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (!e.target.closest(".question-card")) {
         setShowOptions(false);
       }
     };
-
     document.addEventListener("click", handleClickOutside);
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
   }, [questionImage, questionVideo]);
-
+  const handleKeyDown = (e) => {
+    if (e.key === "Backspace" && question_text === "") {
+      e.preventDefault();
+      dispatch(
+        removeQuestion({
+          pageNumber: pageNo,
+          sectionIndex: section_index,
+          questionIndex: question_index,
+        })
+      );
+    }
+  };
   return (
     <div className="question-card">
       <div className="question-text">
@@ -48,13 +66,18 @@ function QuestionCard({
               type="text"
               placeholder="Enter your question here..."
               value={question_text}
-              onChange={(e) =>
-                handleChangeQuestionText(
-                  e.target.value,
-                  question_index,
-                  section_index
-                )
-              }
+              autoFocus
+              onKeyDown={handleKeyDown}
+              onChange={(e) => {
+                dispatch(
+                  changeQuestionText({
+                    pageNumber: parseInt(pageNo),
+                    questionText: e.target.value,
+                    questionIndex: question_index,
+                    sectionIndex: section_index,
+                  })
+                );
+              }}
             />
           )}
         </div>
@@ -82,10 +105,13 @@ function QuestionCard({
         {showOptions && (
           <ul
             onClick={(e) => {
-              handleChangeQuestionType(
-                e.target.innerText.toLowerCase(),
-                question_index,
-                section_index
+              dispatch(
+                changeQuestionType({
+                  pageNumber: parseInt(pageNo),
+                  questionType: e.target.innerText.toLowerCase(),
+                  questionIndex: question_index,
+                  sectionIndex: section_index,
+                })
               );
               setShowOptions(false);
             }}
@@ -105,30 +131,63 @@ function QuestionCard({
       </div>
       <div className="question-image-video-container">
         {questionImage && (
-            <img
-              src={URL.createObjectURL(questionImage)}
-              alt="Question"
-              className="question-image"
-            />
+          <img
+            src={URL.createObjectURL(questionImage)}
+            alt="Question"
+            className="question-image"
+          />
         )}
-
         {questionVideo && (
           <video src={URL.createObjectURL(questionVideo)} controls />
         )}
       </div>
       <div className="question-options-container">
         {question_type === "multiple choice" && (
-          <RadioType question_no={question_no} />
+          <RadioType
+            question_no={question_no}
+            sectionIndex={section_index}
+            options={options}
+            questionId={question.questionId || question._id?.toString()}
+          />
         )}
         {question_type === "short answer" && <ShortType />}
-        {question_type === "checkbox" && <CheckboxType />}
+        {question_type === "checkbox" && (
+          <CheckboxType
+            sectionIndex={section_index}
+            question_no={question_no}
+            options={options}
+            questionId={question.questionId || question._id?.toString()}
+          />
+        )}
         {question_type === "long answer" && <LongType />}
-        {question_type === "rating" && <RatingType />}
-        {question_type === "linear scale" && <LinearScaleType />}
-        {question_type === "date" && <DateType />}
+        {question_type === "rating" && (
+          <RatingType
+            questionId={question.questionId || question._id?.toString()}
+          />
+        )}
+        {question_type === "linear scale" && (
+          <LinearScaleType
+            questionId={question.questionId || question._id?.toString()}
+          />
+        )}
+        {question_type === "date" && (
+          <DateType
+            questionId={question.questionId || question._id?.toString()}
+          />
+        )}
+        {question_type === "dropdown" && (
+          <DropdownType
+            sectionIndex={section_index}
+            question_no={question_no}
+            options={options}
+            questionId={question.questionId || question._id?.toString()}
+          />
+        )}
       </div>
     </div>
   );
 }
-
 export default QuestionCard;
+
+
+

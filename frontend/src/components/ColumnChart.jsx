@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import ReactApexChart from "react-apexcharts";
-
 function ColumnChart() {
   const [state, setState] = React.useState({
     series: [
@@ -77,7 +76,6 @@ function ColumnChart() {
       },
     },
   });
-
   useEffect(() => {
     const elements = document.getElementsByClassName("apexcharts-canvas");
     Array.from(elements).forEach((el) => {
@@ -87,7 +85,6 @@ function ColumnChart() {
       }
     });
   }, [state]);
-
   return (
     <div>
       <div id="chart">
@@ -101,5 +98,7 @@ function ColumnChart() {
     </div>
   );
 }
-
 export default ColumnChart;
+
+
+

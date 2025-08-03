@@ -1,7 +1,6 @@
 import "./style/mainpagestyle.css";
 import SideBar from '../components/SideBar'
 import {Outlet} from 'react-router-dom'
-
 function MainPage() {
   return (
     <div className='main-page-container'>
@@ -10,5 +9,7 @@ function MainPage() {
     </div>
   )
 }
-
 export default MainPage
+
+
+

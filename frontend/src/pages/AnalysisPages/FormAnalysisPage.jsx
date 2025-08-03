@@ -1,6 +1,5 @@
 import ColumnChart from "../../components/ColumnChart";
 import "../style/formanalyispagestyle.css";
-
 function FormAnalysisPage() {
   return (
     <div className="homepage-container">
@@ -28,5 +27,7 @@ function FormAnalysisPage() {
     </div>
   );
 }
-
 export default FormAnalysisPage;
+
+
+

@@ -1,11 +1,13 @@
 import { useState } from "react";
 import "./style/projectcardstyle.css";
-
-function ProjectCard() {
+import { useNavigate } from "react-router-dom";
+function ProjectCard({ project }) {
   const [toggleOptions, setToggleOptions] = useState(false);
+  const navigate = useNavigate();
+  console.log(project);
   return (
     <div className="project-card-container">
-      <div className="project-card-body">
+      <div onClick={() => navigate(`/projects/${project.projectName}/${project._id}`)} className="project-card-body">
         <svg
           width="60"
           height="60"
@@ -16,13 +18,13 @@ function ProjectCard() {
           <path
             d="M82.4167 33.8426H7.16675M7.16675 7.36575C7.16675 6.36259 7.58402 5.40052 8.32676 4.69118C9.0695 3.98185 10.0769 3.58334 11.1273 3.58334H34.8904L44.7917 14.9306H78.4562C79.5066 14.9306 80.514 15.3291 81.2567 16.0384C81.9995 16.7477 82.4167 17.7098 82.4167 18.713V67.8843C82.4167 68.8874 81.9995 69.8495 81.2567 70.5588C80.514 71.2682 79.5066 71.6667 78.4562 71.6667H11.1273C10.0769 71.6667 9.0695 71.2682 8.32676 70.5588C7.58402 69.8495 7.16675 68.8874 7.16675 67.8843V7.36575Z"
             stroke="white"
-            stroke-width="4"
-            stroke-linejoin="round"
+            strokeWidth="4"
+            strokeLinejoin="round"
           />
         </svg>
       </div>
       <div className="project-card-footer">
-        <p>Project Name</p>
+        <p>{project.projectName}</p>
         <svg
           width="4"
           height="18"
@@ -46,5 +48,7 @@ function ProjectCard() {
     </div>
   );
 }
-
 export default ProjectCard;
+
+
+

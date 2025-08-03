@@ -1,171 +1,96 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "../style/createfrompagestyle.css";
 import FormEditor from "../../components/FormEditor";
 import QuestionCard from "../../components/QuestionCard";
-import { Link } from "react-router-dom";
-
+import { Link, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addImage, addVideo } from "../../redux/slices/state/formstateslice";
+import { useSaveFormMutation } from "../../redux/slices/api/form.api";
+import ConditionCard from "../../components/ConditionCard";
 function CreateFormPage() {
-  const [sections, setSections] = useState([]);
+  const { currentForm, isConditionActive } = useSelector((state) => state.form);
   const [focusQuestionInput, setFocusQuestionInput] = useState(false);
-  const [formBackgroundColor, setFormBackgroundColor] = useState("#ffffff");
-  const [sectionColor, setSectionColor] = useState("#c9def3");
   const [toggleImageUpload, setToggleImageUpload] = useState(false);
   const [toggleVideoUpload, setToggleVideoUpload] = useState(false);
-
-  const handleAddQuestion = () => {
-    if (sections.length === 0) {
-      setSections([
-        {
-          SectionColor: "#c9def3",
-          questions: [
-            {
-              question_no: 1,
-              question_type: "short answer",
-              question_text: "",
-              image: null,
-              video: null,
-            },
-          ],
-        },
-      ]);
-    } else {
-      sections[sections.length - 1].questions?.push({
-        question_no: sections[sections.length - 1].questions?.length + 1,
-        question_type: "short answer",
-        question_text: "",
-        image: null,
-        video: null,
-      });
-      setSections([...sections]);
-    }
-  };
-
+  const { pageNo } = useParams();
+  const currentPage = currentForm?.pages?.find(
+    (page) => page.pageNumber === parseInt(pageNo)
+  );
+  const sections = currentPage?.sections || [];
+  const dispatch = useDispatch();
+  const [saveForm] = useSaveFormMutation();
+  const [toggleConditionCard, setToggleConditionCard] = useState(false);
   const handleFocusQuestionInput = () => {
     setFocusQuestionInput(true);
   };
-
-  const handleAddSection = () => {
-    setSections([
-      ...sections,
-      {
-        SectionColor: sectionColor,
-        questions: [
-          {
-            question_no: 1,
-            question_type: "short answer",
-            question_text: "",
-            image: null,
-            video: null,
-          },
-        ],
-      },
-    ]);
-  };
-
-  const handleBackgroundColorChange = (e) => {
-    setFormBackgroundColor(e.target.value);
-  };
-
-  const handleSectionColorChange = (e) => {
-    setSectionColor(e.target.value);
-    sections[sections.length - 1].SectionColor = e.target.value;
-    setSections([...sections]);
-  };
-
-  const handleChangeQuestionType = (
-    question_type,
-    question_index,
-    section_index
-  ) => {
-    const updatedSections = [...sections];
-    updatedSections[section_index].questions[question_index].question_type =
-      question_type;
-    setSections(updatedSections);
-  };
-
-  const handleChangeQuestionText = (text, question_index, section_index) => {
-    const updatedSections = [...sections];
-    updatedSections[section_index].questions[question_index].question_text =
-      text;
-    setSections(updatedSections);
-  };
-
   const handleAddQuestionImage = (e) => {
-    const updatedSections = [...sections];
-    const lastSection = updatedSections[updatedSections.length - 1];
-    if (
-      lastSection &&
-      lastSection.questions &&
-      lastSection.questions.length > 0
-    ) {
-      const currentQuestion =
-        lastSection.questions[lastSection.questions.length - 1];
-      currentQuestion.image = e.target.files[0];
-      setSections(updatedSections);
-      setToggleImageUpload(false);
-    } else {
-      console.warn("No question available to add image.");
-    }
+    dispatch(addImage({ image: e.target.files[0] }));
+    setToggleImageUpload(false);
   };
-
   const handleAddQuestionVideo = (e) => {
-    const updatedSections = [...sections];
-    const lastSection = updatedSections[updatedSections.length - 1];
-    if (
-      lastSection &&
-      lastSection.questions &&
-      lastSection.questions.length > 0
-    ) {
-      const currentQuestion =
-        lastSection.questions[lastSection.questions.length - 1];
-      currentQuestion.video = e.target.files[0];
-      setSections(updatedSections);
-      setToggleVideoUpload(false);
-    } else {
-      console.warn("No question available to add video.");
-    }
+    dispatch(addVideo({ video: e.target.files[0] }));
+    setToggleVideoUpload(false);
   };
-
+  const handleSaveForm = async () => {
+    await saveForm(currentForm)
+      .unwrap()
+      .then((response) => {
+        console.log("Form saved successfully:", response);
+      })
+      .catch((error) => {
+        console.error("Error saving form:", error);
+      });
+  };
   return (
     <div className="homepage-container">
-      <div className="homepage-title">Title</div>
+      <div className="homepage-title">{currentForm?.formTitle}</div>
       <div className="create-from-action-buttons">
-        <Link to="/preview" className="form-preview-button">Preview</Link>
-        <button className="form-save-button">Save</button>
+        <Link
+          to={`/create-form/${currentForm?._id}/preview`}
+          className="form-preview-button"
+        >
+          Preview
+        </Link>
+        <button onClick={handleSaveForm} className="form-save-button">
+          Save
+        </button>
       </div>
       <div className="homepage-content" style={{ padding: "0px" }}>
         <section className="form-editor-section">
           <div
             id="form-question-container"
             className="form-question-container"
-            style={{ backgroundColor: formBackgroundColor }}
+            style={{
+              backgroundColor: currentForm?.backgroundColor || "#ffffff",
+            }}
           >
-            {sections.map((item, sindex) => {
+            {sections?.map((section, sindex) => {
               return (
                 <section
                   className="question-section"
-                  style={{ backgroundColor: item.SectionColor }}
+                  style={{ backgroundColor: section?.backgroundColor }}
                   key={sindex}
                 >
-                  {item?.questions?.map((question, qIndex) => (
-                    <QuestionCard
-                      key={qIndex}
-                      question_index={qIndex}
-                      section_index={sindex}
-                      question_no={qIndex + 1}
-                      question_text={question.question_text}
-                      question_type={question.question_type}
-                      focusQuestionInput={focusQuestionInput}
-                      handleChangeQuestionType={handleChangeQuestionType}
-                      handleChangeQuestionText={handleChangeQuestionText}
-                      questionImage={question.image}
-                      questionVideo={question.video}
-                    />
-                  ))}
+                  {section?.questions?.map((question, qIndex) => {
+                    const isLastSection = sindex === sections.length - 1;
+                    const isLastQuestion =
+                      qIndex === section.questions.length - 1;
+                    const shouldFocus =
+                      focusQuestionInput && isLastSection && isLastQuestion;
+                    return (
+                      <QuestionCard
+                        key={question.questionId || question._id || qIndex}
+                        question_index={qIndex}
+                        section_index={sindex}
+                        question_no={qIndex + 1}
+                        question={question}
+                        focusQuestionInput={shouldFocus}
+                      />
+                    );
+                  })}
                 </section>
               );
             })}
-
             {toggleImageUpload && (
               <div className="create-form-image-upload-container">
                 <div className="create-form-image-upload-header">
@@ -201,7 +126,6 @@ function CreateFormPage() {
                 </div>
               </div>
             )}
-
             {toggleVideoUpload && (
               <div className="create-form-image-upload-container">
                 <div className="create-form-image-upload-header">
@@ -239,20 +163,18 @@ function CreateFormPage() {
             )}
           </div>
           <FormEditor
-            handleAddQuestion={handleAddQuestion}
+            formId={currentForm?._id}
             handleFocusQuestionInput={handleFocusQuestionInput}
-            handleAddSection={handleAddSection}
-            handleBackgroundColorChange={handleBackgroundColorChange}
-            handleSectionColorChange={handleSectionColorChange}
-            sectionColor={sectionColor}
-            backgroundColor={formBackgroundColor}
             setToggleImageUpload={setToggleImageUpload}
             setToggleVideoUpload={setToggleVideoUpload}
           />
+          {isConditionActive && <button className="create-form-add-condition-button" onClick={() => setToggleConditionCard(!toggleConditionCard)}>Add Condition</button>}
+          {toggleConditionCard && <ConditionCard setToggleConditionCard={setToggleConditionCard} />}
         </section>
       </div>
     </div>
   );
 }
-
 export default CreateFormPage;
+
+

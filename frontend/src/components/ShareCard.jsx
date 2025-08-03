@@ -1,7 +1,6 @@
 import React from "react";
 import "./style/sharecardstyle.css";
-
-function ShareCard({ setToggleShareCard }) {
+function ShareCard({ setToggleShareCard, publishLink }) {
 return (
     <div className="share-card-container">
         <div className="share-card">
@@ -17,13 +16,12 @@ return (
                         <path
                             d="M11.3167 21.5168L22.7 28.1502M22.6833 9.85016L11.3167 16.4835M32 7.3335C32 10.0949 29.7614 12.3335 27 12.3335C24.2386 12.3335 22 10.0949 22 7.3335C22 4.57207 24.2386 2.3335 27 2.3335C29.7614 2.3335 32 4.57207 32 7.3335ZM12 19.0002C12 21.7616 9.76142 24.0002 7 24.0002C4.23858 24.0002 2 21.7616 2 19.0002C2 16.2387 4.23858 14.0002 7 14.0002C9.76142 14.0002 12 16.2387 12 19.0002ZM32 30.6668C32 33.4283 29.7614 35.6668 27 35.6668C24.2386 35.6668 22 33.4283 22 30.6668C22 27.9054 24.2386 25.6668 27 25.6668C29.7614 25.6668 32 27.9054 32 30.6668Z"
                             stroke="#1E1E1E"
-                            stroke-width="4"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
+                            strokeWidth="4"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
                         />
                     </svg>
                 </div>
-
                 <svg
                     width="22"
                     height="22"
@@ -36,8 +34,8 @@ return (
                     <path
                         d="M1 1L11 11M21 21L11 11M11 11L21 1L1 21"
                         stroke="black"
-                        stroke-width="2"
-                        stroke-linecap="round"
+                        strokeWidth="2"
+                        strokeLinecap="round"
                     />
                 </svg>
             </div>
@@ -57,14 +55,15 @@ return (
                             fill="#69B5F8"
                         />
                     </svg>
-
-                    <input type="text" id="share" placeholder="Copy the Link" />
+                    <input type="text" id="share" placeholder="Copy the Link" value={publishLink} disabled />
                 </div>
-                <button className="share-button">Share</button>
+                <button onClick={() => setToggleShareCard(false)} className="share-button">Share</button>
             </div>
         </div>
     </div>
 );
 }
-
 export default ShareCard;
+
+
+

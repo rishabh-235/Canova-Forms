@@ -148,3 +148,21 @@
     text-align: center;
     line-height: 28px;
 }
+
+.create-form-add-condition-button {
+    width: 200px;
+    height: 40px;
+    background-color: #69B5F8;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: #ffffff;
+    position: absolute;
+    bottom: 25px;
+    right: 18rem;
+}

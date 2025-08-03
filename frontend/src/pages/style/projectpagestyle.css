@@ -1,9 +1,9 @@
 .project-list {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: start;
     flex-wrap: wrap;
     gap: 30px;
     overflow-y: auto;
-    height: 100%;
+    height: auto;
 }

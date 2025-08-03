@@ -2,7 +2,6 @@ import FormCard from "../../components/FormCard";
 import LineChart from "../../components/LineChart";
 import ProjectCard from "../../components/ProjectCard";
 import "../style/projectanalysispagestyle.css";
-
 function ProjectAnalysisPage() {
   return (
     <div className="homepage-container">
@@ -39,5 +38,7 @@ function ProjectAnalysisPage() {
     </div>
   );
 }
-
 export default ProjectAnalysisPage;
+
+
+

@@ -1,6 +1,5 @@
 import React from "react";
 import ReactApexChart from "react-apexcharts";
-
 function LineChart() {
   const [state, setState] = React.useState({
     series: [
@@ -60,7 +59,6 @@ function LineChart() {
       },
     },
   });
-
   return (
     <div>
       <div id="chart">
@@ -75,5 +73,7 @@ function LineChart() {
     </div>
   );
 }
-
 export default LineChart;
+
+
+

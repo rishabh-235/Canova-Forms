@@ -1,8 +1,6 @@
 import React from "react";
-
 import "./style/sidebarstyle.css";
 import { Link, NavLink } from "react-router-dom";
-
 function SideBar() {
   return (
     <div className="sidebar-container">
@@ -18,22 +16,20 @@ function SideBar() {
           <path
             d="M12.8391 7.1609C16.6724 10.9942 18.5074 15.3717 16.9391 16.9401C15.3724 18.5076 10.9932 16.6717 7.16072 12.8392C3.32822 9.00673 1.49239 4.6284 3.06072 3.06007C4.62739 1.49257 9.00572 3.3284 12.8391 7.1609Z"
             stroke="#151515"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
           <path
             d="M9.79154 9.99999H10.2082M7.16154 7.16082C3.32821 10.9942 1.49237 15.3717 3.06071 16.94C4.62904 18.5083 9.00654 16.6717 12.839 12.8392C16.6715 9.00665 18.5082 4.62832 16.9399 3.05999C15.3715 1.49165 10.994 3.32832 7.16154 7.16082Z"
             stroke="#151515"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
           />
         </svg>
-
         <p className="logo-text">CANOVA</p>
       </Link>
-
       <div className="navigation-container">
         <NavLink to={"/"} className={({ isActive }) => isActive ? `nav-item active-link` : `nav-item`}>
           <svg
@@ -46,19 +42,18 @@ function SideBar() {
             <path
               d="M3.75 7.5V17.5H16.25V7.5L10 2.5L3.75 7.5Z"
               stroke="black"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M7.91675 12.0833V17.5H12.0834V12.0833H7.91675Z"
               stroke="black"
-              stroke-linejoin="round"
+              strokeLinejoin="round"
             />
-            <path d="M3.75 17.5H16.25" stroke="black" stroke-linecap="round" />
+            <path d="M3.75 17.5H16.25" stroke="black" strokeLinecap="round" />
           </svg>
           <p>Home</p>
         </NavLink>
-
         <NavLink to={"/analysis"} className={({ isActive }) => isActive ? `nav-item active-link` : `nav-item`}>
           <svg
             width="20"
@@ -70,24 +65,22 @@ function SideBar() {
             <path
               d="M18.3334 2.08331H1.66675V7.08331H18.3334V2.08331Z"
               stroke="black"
-              stroke-linejoin="round"
+              strokeLinejoin="round"
             />
             <path
               d="M1.66675 17.0958L6.74008 11.9708L9.48133 14.5958L12.8326 11.25L14.6992 13.07"
               stroke="black"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M18.3334 6.73834V17.5717M1.66675 6.73834V12.5717M5.423 17.9167H18.3334M7.08341 4.58334H15.8334M4.16675 4.58209H4.58341"
               stroke="black"
-              stroke-linecap="round"
+              strokeLinecap="round"
             />
           </svg>
-
           <p>Analysis</p>
         </NavLink>
-
         <NavLink to={"/projects"} className={({ isActive }) => isActive ? `nav-item active-link` : `nav-item`}>
           <svg
             width="19"
@@ -99,13 +92,11 @@ function SideBar() {
             <path
               d="M18 7.16667H1M1 1.33333C1 1.11232 1.09427 0.900358 1.26206 0.744078C1.42986 0.587797 1.65744 0.5 1.89474 0.5H7.26316L9.5 3H17.1053C17.3426 3 17.5701 3.0878 17.7379 3.24408C17.9057 3.40036 18 3.61232 18 3.83333V14.6667C18 14.8877 17.9057 15.0996 17.7379 15.2559C17.5701 15.4122 17.3426 15.5 17.1053 15.5H1.89474C1.65744 15.5 1.42986 15.4122 1.26206 15.2559C1.09427 15.0996 1 14.8877 1 14.6667V1.33333Z"
               stroke="black"
-              stroke-linejoin="round"
+              strokeLinejoin="round"
             />
           </svg>
-
           <p>Projects</p>
         </NavLink>
-
         <NavLink to={"/profile"} className={({ isActive }) => isActive ? `nav-item profile-item active-link` : `nav-item profile-item`}>
           <svg
             width="20"
@@ -123,12 +114,13 @@ function SideBar() {
               fill="black"
             />
           </svg>
-
           <p>Profile</p>
         </NavLink>
       </div>
     </div>
   );
 }
-
 export default SideBar;
+
+
+

@@ -48,3 +48,33 @@
     padding: 20px;
     overflow-y: auto;
 }
+
+.submit-button {
+    width: 120px;
+    height: 40px;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: medium;
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 50px;
+}
+
+.next-page-button {
+    width: 130px;
+    height: 40px;
+    background-color: #000000;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: medium;
+    cursor: pointer;
+    position: fixed;
+    bottom: 20px;
+    right: 50px;
+}
