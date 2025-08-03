@@ -1,9 +1,9 @@
 import dotenv from "dotenv";
 import { app } from "./app.js";
 import connectDB from "./db/db.config.js";
-dotenv.config({
-  path: "../.env",
-});
+
+// Load environment variables - works both locally and in production
+dotenv.config();
 connectDB()
   .then(() => {
     app.on("error", (error) => {
