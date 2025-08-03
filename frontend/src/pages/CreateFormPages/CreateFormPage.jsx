@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addImage, addVideo } from "../../redux/slices/state/formstateslice";
 import { useSaveFormMutation } from "../../redux/slices/api/form.api";
 import ConditionCard from "../../components/ConditionCard";
+import { toast } from "react-toastify";
 function CreateFormPage() {
   const { currentForm, isConditionActive } = useSelector((state) => state.form);
   const [focusQuestionInput, setFocusQuestionInput] = useState(false);
@@ -24,22 +25,73 @@ function CreateFormPage() {
     setFocusQuestionInput(true);
   };
   const handleAddQuestionImage = (e) => {
-    dispatch(addImage({ image: e.target.files[0] }));
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("Image size should be less than 5MB");
+      return;
+    }
+
+    // Check file type
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select a valid image file");
+      return;
+    }
+
+    dispatch(addImage({ image: file }));
     setToggleImageUpload(false);
+    toast.success("Image added successfully!");
   };
   const handleAddQuestionVideo = (e) => {
-    dispatch(addVideo({ video: e.target.files[0] }));
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // Check file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("Video size should be less than 10MB");
+      return;
+    }
+
+    // Check file type
+    if (!file.type.startsWith("video/")) {
+      toast.error("Please select a valid video file");
+      return;
+    }
+
+    dispatch(addVideo({ video: file }));
     setToggleVideoUpload(false);
+    toast.success("Video added successfully!");
   };
   const handleSaveForm = async () => {
-    await saveForm(currentForm)
-      .unwrap()
-      .then((response) => {
-        console.log("Form saved successfully:", response);
-      })
-      .catch((error) => {
-        console.error("Error saving form:", error);
+    if (!currentForm?.pages || currentForm.pages.length === 0) {
+      toast.error("Cannot save an empty form. Please add some content first.");
+      return;
+    }
+
+    const loadingToast = toast.loading("Saving form...");
+
+    try {
+      const response = await saveForm(currentForm).unwrap();
+      toast.update(loadingToast, {
+        render: "Form saved successfully!",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
       });
+    } catch (error) {
+      const errorMessage =
+        error?.data?.message ||
+        error?.message ||
+        "Failed to save form. Please try again.";
+      toast.update(loadingToast, {
+        render: errorMessage,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
+    }
   };
   return (
     <div className="homepage-container">
@@ -168,13 +220,20 @@ function CreateFormPage() {
             setToggleImageUpload={setToggleImageUpload}
             setToggleVideoUpload={setToggleVideoUpload}
           />
-          {isConditionActive && <button className="create-form-add-condition-button" onClick={() => setToggleConditionCard(!toggleConditionCard)}>Add Condition</button>}
-          {toggleConditionCard && <ConditionCard setToggleConditionCard={setToggleConditionCard} />}
+          {isConditionActive && (
+            <button
+              className="create-form-add-condition-button"
+              onClick={() => setToggleConditionCard(!toggleConditionCard)}
+            >
+              Add Condition
+            </button>
+          )}
+          {toggleConditionCard && (
+            <ConditionCard setToggleConditionCard={setToggleConditionCard} />
+          )}
         </section>
       </div>
     </div>
   );
 }
 export default CreateFormPage;
-
-

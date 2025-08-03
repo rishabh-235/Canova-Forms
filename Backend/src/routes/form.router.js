@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { verifyJWT } from "../middleware/auth.middleware.js";
-import { createForm, getFormById, getForms, getRecentWorks, getResponseForm, getSharedWorks, publishForm, saveForm } from "../controllers/form.controller.js";
+import { createForm, deleteForm, getFormById, getForms, getRecentWorks, getResponseForm, getSharedWorks, publishForm, saveForm } from "../controllers/form.controller.js";
 import { createProject, getProjects } from "../controllers/project.controller.js";
 const router = Router();
 router.post("/create-project", verifyJWT, createProject, createForm);
@@ -13,6 +13,7 @@ router.post("/publish-form", verifyJWT, publishForm);
 router.get("/get-projects", verifyJWT, getProjects);
 router.get("/get-forms/:projectId", verifyJWT, getForms);
 router.get("/get-response-form/:responseFormId", getResponseForm);
+router.delete("/delete-form/:formId", verifyJWT, deleteForm);
 export default router;
 
 

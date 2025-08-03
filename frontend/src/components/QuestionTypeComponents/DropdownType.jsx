@@ -3,80 +3,74 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import {
   addOption,
+  removeOption,
+  updateOption,
   addCondition,
   removeCondition,
 } from "../../redux/slices/state/formstateslice";
+
 function DropdownType({
   question_no,
   sectionIndex,
   options: questionOptions,
   questionId,
 }) {
-  const [options, setOptions] = useState(questionOptions);
   const [selectedConditions, setSelectedConditions] = useState(new Set());
   const dispatch = useDispatch();
   const { isConditionActive } = useSelector((state) => state.form);
   const { pageNo } = useParams();
   const currentPageNumber = parseInt(pageNo) || 1;
+
+  // Initialize with one empty option if no options exist
   useEffect(() => {
-    if (questionOptions.length === 0) {
-      setOptions([{ id: Date.now() + Math.random(), text: "" }]);
-    } else {
-      setOptions(questionOptions);
-    }
-    dispatch(
-      addOption({ sectionIndex, questionIndex: question_no - 1, options })
-    );
-  }, []);
-  const handleOptionTextChange = (id, value) => {
-    setOptions((prev) => {
-      const updatedOptions = prev.map((opt) =>
-        opt.id === id ? { ...opt, text: value } : opt
-      );
+    if (!questionOptions || questionOptions.length === 0) {
       dispatch(
         addOption({
-          sectionIndex,
-          questionIndex: question_no - 1,
-          options: updatedOptions,
+          pageNumber: currentPageNumber,
+          questionId,
         })
       );
-      return updatedOptions;
-    });
+    }
+  }, []);
+
+  const handleOptionTextChange = (optionId, value) => {
+    dispatch(
+      updateOption({
+        pageNumber: currentPageNumber,
+        questionId,
+        optionId,
+        text: value,
+      })
+    );
   };
-  const handleKeyDown = (e, id, idx) => {
+
+  const handleKeyDown = (e, optionId, optionIndex) => {
     if (e.key === "Enter") {
-      setOptions((prev) => {
-        const updatedOptions = [
-          ...prev,
-          { id: Date.now() + Math.random(), text: "" },
-        ];
-        dispatch(
-          addOption({
-            sectionIndex,
-            questionIndex: question_no - 1,
-            options: updatedOptions,
-          })
-        );
-        return updatedOptions;
-      });
+      e.preventDefault();
+      // Add new option
+      dispatch(
+        addOption({
+          pageNumber: currentPageNumber,
+          questionId,
+        })
+      );
     } else if (
       e.key === "Backspace" &&
-      options[idx].text === "" &&
-      options.length > 1
+      questionOptions[optionIndex]?.text === "" &&
+      questionOptions.length > 1
     ) {
-      setOptions((prev) => {
-        const updatedOptions = prev.filter((opt) => opt.id !== id);
-        dispatch(
-          addOption({
-            sectionIndex,
-            questionIndex: question_no - 1,
-            options: updatedOptions,
-          })
-        );
-        return updatedOptions;
-      });
+      e.preventDefault();
+      // Remove option
+      dispatch(
+        removeOption({
+          pageNumber: currentPageNumber,
+          questionId,
+          optionId,
+        })
+      );
     }
   };
+
   const handleChangeConditionInput = (optionText, isChecked) => {
     if (!questionId) return;
     if (isChecked) {
@@ -103,25 +97,33 @@ function DropdownType({
       );
     }
   };
+
   return (
     <div className="dropdown-type-container">
       <div className="option-input-dropdown-list">
-        {options.map((option, idx) => (
-          <div key={option.id} className="option-input-dropdown-item">
+        {(questionOptions || []).map((option, idx) => (
+          <div
+            key={option.optionId || option._id || idx}
+            className="option-input-dropdown-item"
+          >
             <input
-              key={option.id}
-              value={option.text}
+              value={option.text || ""}
               placeholder="Enter Dropdown text"
               onChange={(e) =>
-                handleOptionTextChange(option.id, e.target.value)
+                handleOptionTextChange(
+                  option.optionId || option._id,
+                  e.target.value
+                )
               }
-              onKeyDown={(e) => handleKeyDown(e, option.id, idx)}
+              onKeyDown={(e) =>
+                handleKeyDown(e, option.optionId || option._id, idx)
+              }
               className="option-input-dropdown-text"
             />
             {isConditionActive && (
               <input
                 type="checkbox"
-                name={`condition-question-${question_no}`}
+                id={`condition-input-${option.optionId || option._id}`}
                 className="option-input-checkbox"
                 checked={selectedConditions.has(option.text)}
                 onChange={(e) =>
@@ -135,7 +137,5 @@ function DropdownType({
     </div>
   );
 }
+
 export default DropdownType;
-
-
-

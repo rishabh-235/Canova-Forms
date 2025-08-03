@@ -8,6 +8,7 @@ import {
   setForm,
 } from "../redux/slices/state/formstateslice";
 import { usePublishFormMutation } from "../redux/slices/api/form.api";
+import { toast } from "react-toastify";
 function PublishCard({
   setTogglePublishCard,
   setToggleShareCard,
@@ -31,25 +32,55 @@ function PublishCard({
     dispatch(addShareEmail({ email: "", type: "view", index: newIndex }));
   };
   const handlePublishForm = async () => {
-    console.log(currentForm);
-    await publishForm({
-      _id: currentForm._id,
-      backgroundColor: currentForm.backgroundColor,
-      pages: currentForm.pages,
-      sharedWith: sharedEmails,
-      restriction: currentForm.restriction,
-    })
-      .unwrap()
-      .then((response) => {
-        if (response?.success) {
-          dispatch(setForm(response.form));
-          setPublishLink(response.publishLink);
-          setTogglePublishCard(false);
-          setToggleShareCard(true);
-        } else {
-          console.error("Error publishing form:", response?.message);
-        }
+    if (!currentForm?.pages || currentForm.pages.length === 0) {
+      toast.error(
+        "Cannot publish an empty form. Please add some content first."
+      );
+      return;
+    }
+
+    const loadingToast = toast.loading("Publishing form...");
+
+    try {
+      const response = await publishForm({
+        _id: currentForm._id,
+        backgroundColor: currentForm.backgroundColor,
+        pages: currentForm.pages,
+        sharedWith: sharedEmails,
+        restriction: currentForm.restriction,
+      }).unwrap();
+
+      if (response?.success) {
+        dispatch(setForm(response.form));
+        setPublishLink(response.publishLink);
+        setTogglePublishCard(false);
+        setToggleShareCard(true);
+        toast.update(loadingToast, {
+          render: "Form published successfully!",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      } else {
+        toast.update(loadingToast, {
+          render: response?.message || "Failed to publish form",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      }
+    } catch (error) {
+      const errorMessage =
+        error?.data?.message ||
+        error?.message ||
+        "Failed to publish form. Please try again.";
+      toast.update(loadingToast, {
+        render: errorMessage,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
       });
+    }
   };
   return (
     <div className="publish-card-container">

@@ -198,12 +198,73 @@ const formStateSlice = createSlice({
       currentQuestion.video = video;
     },
     addOption: (state, action) => {
-      const { sectionIndex, questionIndex, options } = action.payload;
-      const currentSection =
-        state.currentForm.pages[state.activePage - 1]?.sections[sectionIndex];
-      const currentQuestion = currentSection?.questions[questionIndex];
-      if (currentQuestion?.options) {
-        currentQuestion.options = [...options];
+      const { pageNumber, questionId } = action.payload;
+      const currentPage = state.currentForm.pages.find(
+        (page) => page.pageNumber === pageNumber
+      );
+      if (currentPage) {
+        currentPage.sections.forEach((section) => {
+          const question = section.questions.find(
+            (q) =>
+              q.questionId === questionId || q._id?.toString() === questionId
+          );
+          if (question) {
+            if (!question.options) {
+              question.options = [];
+            }
+            question.options.push({
+              optionId: new ObjectId().toString(),
+              text: "",
+            });
+          }
+        });
+      }
+    },
+    removeOption: (state, action) => {
+      const { pageNumber, questionId, optionId } = action.payload;
+      const currentPage = state.currentForm.pages.find(
+        (page) => page.pageNumber === pageNumber
+      );
+      if (currentPage) {
+        currentPage.sections.forEach((section) => {
+          const question = section.questions.find(
+            (q) =>
+              q.questionId === questionId || q._id?.toString() === questionId
+          );
+          if (question && question.options) {
+            const optionIndex = question.options.findIndex(
+              (option) =>
+                option.optionId === optionId ||
+                option._id?.toString() === optionId
+            );
+            if (optionIndex !== -1) {
+              question.options.splice(optionIndex, 1);
+            }
+          }
+        });
+      }
+    },
+    updateOption: (state, action) => {
+      const { pageNumber, questionId, optionId, text } = action.payload;
+      const currentPage = state.currentForm.pages.find(
+        (page) => page.pageNumber === pageNumber
+      );
+      if (currentPage) {
+        currentPage.sections.forEach((section) => {
+          const question = section.questions.find(
+            (q) =>
+              q.questionId === questionId || q._id?.toString() === questionId
+          );
+          if (question && question.options) {
+            const option = question.options.find(
+              (opt) =>
+                opt.optionId === optionId || opt._id?.toString() === optionId
+            );
+            if (option) {
+              option.text = text;
+            }
+          }
+        });
       }
     },
     activateCondition: (state) => {
@@ -312,6 +373,8 @@ export const {
   addImage,
   addVideo,
   addOption,
+  removeOption,
+  updateOption,
   activateCondition,
   addCondition,
   removeCondition,
@@ -321,5 +384,3 @@ export const {
   setResponseForm,
 } = formStateSlice.actions;
 export default formStateSlice.reducer;
-
-

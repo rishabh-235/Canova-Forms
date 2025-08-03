@@ -70,6 +70,10 @@ const formSchema = new Schema(
                 },
                 options: [
                   {
+                    optionId: {
+                      type: Schema.Types.ObjectId,
+                      auto: true,
+                    },
                     text: {
                       type: String,
                     },

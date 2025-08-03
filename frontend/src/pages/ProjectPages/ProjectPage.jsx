@@ -9,7 +9,7 @@ function ProjectPage() {
       <div className="homepage-title">Welcome to CANOVA</div>
       <div className="homepage-content">
         <section className="project-list">
-          {projects && projects.projects.map((project) => (
+          {projects && projects?.projects?.map((project) => (
             <ProjectCard key={project._id} project={project} />
           ))}
         </section>

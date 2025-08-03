@@ -3,6 +3,7 @@ import "./style/signinpagestyle.css";
 import { useSigninUserMutation } from "../redux/slices/api/user.api";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/slices/state/user.stateslice";
+import { toast } from "react-toastify";
 function SigninPage() {
   const [signinUser, { isLoading }] = useSigninUserMutation();
   const dispatch = useDispatch();
@@ -11,17 +12,29 @@ function SigninPage() {
     e.preventDefault();
     const email = e.target.email.value;
     const password = e.target.password.value;
-    try {
-      const response = await signinUser({ email, password }).unwrap();
-      if (response.success) {
-        dispatch(setUser(response.loggedInUser));
-        navigate("/");
-      } else {
-        console.error("Signin failed:", response.message);
-      }
-    } catch (error) {
-      console.error("Signin failed:", error);
+
+    if (!email || !password) {
+      toast.error("Please fill in all fields");
+      return;
     }
+
+    await signinUser({ email, password })
+      .unwrap()
+      .then((data) => {
+        console.log("Signin response:", data);
+        dispatch(setUser(data.loggedInUser));
+      })
+      .then(() => {
+        toast.success("Sign in successful! Welcome back!");
+        navigate("/");
+      })
+      .catch((error) => {
+        const errorMessage =
+          error?.data?.message ||
+          error?.message ||
+          "Sign in failed. Please try again.";
+        toast.error(errorMessage);
+      });
   };
   return (
     <div className="signin-page-container">
@@ -81,7 +94,9 @@ function SigninPage() {
           <div>
             <Link to="/forgot-password">Forget Password?</Link>
           </div>
-          <button className="signin-button" disabled={isLoading}>Sign in</button>
+          <button className="signin-button" disabled={isLoading}>
+            Sign in
+          </button>
         </form>
         <div className="signin-card-footer">
           <p>
@@ -93,5 +108,3 @@ function SigninPage() {
   );
 }
 export default SigninPage;
-
-

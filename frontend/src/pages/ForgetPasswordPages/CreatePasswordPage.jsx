@@ -1,5 +1,34 @@
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+
 function CreatePasswordPage() {
+  const handleResetPassword = (e) => {
+    const password = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirm-password").value;
+
+    if (!password || !confirmPassword) {
+      e.preventDefault();
+      toast.error("Please fill in all fields");
+      return;
+    }
+
+    if (password.length < 8) {
+      e.preventDefault();
+      toast.error("Password must be at least 8 characters long");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      e.preventDefault();
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    toast.success(
+      "Password reset successfully! Please sign in with your new password."
+    );
+  };
+
   return (
     <div className="signin-card-container">
       <div className="signin-card-header">
@@ -27,12 +56,15 @@ function CreatePasswordPage() {
         <div>
           <Link to="/forgot-password">Cancel</Link>
         </div>
-        <button className="signin-button">Reset Password</button>
+        <Link
+          to="/signin"
+          className="signin-button"
+          onClick={handleResetPassword}
+        >
+          Reset Password
+        </Link>
       </div>
     </div>
   );
 }
 export default CreatePasswordPage;
-
-
-

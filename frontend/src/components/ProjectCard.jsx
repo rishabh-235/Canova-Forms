@@ -1,13 +1,39 @@
 import { useState } from "react";
 import "./style/projectcardstyle.css";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 function ProjectCard({ project }) {
   const [toggleOptions, setToggleOptions] = useState(false);
   const navigate = useNavigate();
-  console.log(project);
+
+  const handleShare = () => {
+    setToggleOptions(false);
+    toast.info("Share functionality coming soon!");
+  };
+
+  const handleRename = () => {
+    setToggleOptions(false);
+    toast.info("Rename functionality coming soon!");
+  };
+
+  const handleCopy = () => {
+    setToggleOptions(false);
+    toast.info("Copy functionality coming soon!");
+  };
+
+  const handleDelete = () => {
+    setToggleOptions(false);
+    toast.error("Delete functionality coming soon!");
+  };
+
   return (
     <div className="project-card-container">
-      <div onClick={() => navigate(`/projects/${project.projectName}/${project._id}`)} className="project-card-body">
+      <div
+        onClick={() =>
+          navigate(`/projects/${project.projectName}/${project._id}`)
+        }
+        className="project-card-body"
+      >
         <svg
           width="60"
           height="60"
@@ -39,16 +65,13 @@ function ProjectCard({ project }) {
           <circle cx="2" cy="22" r="2" fill="black" />
         </svg>
         <div className={`form-card-options ${toggleOptions ? "show" : ""}`}>
-          <button>Share</button>
-          <button>Rename</button>
-          <button>Copy</button>
-          <button>Delete</button>
+          <button onClick={handleShare}>Share</button>
+          <button onClick={handleRename}>Rename</button>
+          <button onClick={handleCopy}>Copy</button>
+          <button onClick={handleDelete}>Delete</button>
         </div>
       </div>
     </div>
   );
 }
 export default ProjectCard;
-
-
-

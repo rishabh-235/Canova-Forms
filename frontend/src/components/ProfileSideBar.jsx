@@ -2,6 +2,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { useSignoutUserMutation } from "../redux/slices/api/user.api";
 import { useDispatch, useSelector } from "react-redux";
 import { signout } from "../redux/slices/state/user.stateslice";
+import { toast } from "react-toastify";
 function ProfileSideBar() {
   const { user } = useSelector((state) => state.user);
   const [signoutUser] = useSignoutUserMutation();
@@ -11,10 +12,15 @@ function ProfileSideBar() {
     signoutUser()
       .then(() => {
         dispatch(signout());
+        toast.success("Signed out successfully!");
         navigate("/signin", { replace: true });
       })
       .catch((error) => {
-        console.error("Signout failed:", error);
+        const errorMessage =
+          error?.data?.message ||
+          error?.message ||
+          "Sign out failed. Please try again.";
+        toast.error(errorMessage);
       });
   };
   return (
@@ -126,6 +132,3 @@ function ProfileSideBar() {
   );
 }
 export default ProfileSideBar;
-
-
-

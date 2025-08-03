@@ -1,21 +1,52 @@
 import { useNavigate } from "react-router-dom";
 import { useCreateProjectMutation } from "../redux/slices/api/form.api";
 import "./style/createprojectcardstyle.css";
-function CreateProjectCard({ toggleCreateProjectCard, setToggleCreateProjectCard }) {
+import { toast } from "react-toastify";
+function CreateProjectCard({
+  toggleCreateProjectCard,
+  setToggleCreateProjectCard,
+}) {
   const [createProject] = useCreateProjectMutation();
   const navigate = useNavigate();
   const handleCreateProject = async (e) => {
     e.preventDefault();
-    const formData = {
-      projectName: e.target.projectName.value,
-      formTitle: e.target.formTitle.value,
+    const projectName = e.target.projectName.value.trim();
+    const formTitle = e.target.formTitle.value.trim();
+
+    if (!projectName || !formTitle) {
+      toast.error("Please fill in all fields");
+      return;
     }
-    await createProject(formData).unwrap().then((response) => {
+
+    const formData = {
+      projectName,
+      formTitle,
+    };
+
+    const loadingToast = toast.loading("Creating project...");
+
+    try {
+      const response = await createProject(formData).unwrap();
+      toast.update(loadingToast, {
+        render: "Project created successfully!",
+        type: "success",
+        isLoading: false,
+        autoClose: 2000,
+      });
       navigate(`/create-form/${response.form._id}/1}`);
-    }).catch((error) => {
-      console.error("Failed to create project:", error);
-    });
-  }
+    } catch (error) {
+      const errorMessage =
+        error?.data?.message ||
+        error?.message ||
+        "Failed to create project. Please try again.";
+      toast.update(loadingToast, {
+        render: errorMessage,
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
+    }
+  };
   return (
     <div className="create-project-card">
       <div className="create-project-card-container">
@@ -53,16 +84,31 @@ function CreateProjectCard({ toggleCreateProjectCard, setToggleCreateProjectCard
             />
           </svg>
         </div>
-        <form className="create-project-card-body" onSubmit={handleCreateProject} >
+        <form
+          className="create-project-card-body"
+          onSubmit={handleCreateProject}
+        >
           <p className="create-project-title">Create Project</p>
-          <p className="create-project-description">Provide your project a name and start with your journey</p>
+          <p className="create-project-description">
+            Provide your project a name and start with your journey
+          </p>
           <div>
             <label htmlFor="project-name">Project Name</label>
-            <input type="text" id="project-name" name="projectName" placeholder="Project Name" />
+            <input
+              type="text"
+              id="project-name"
+              name="projectName"
+              placeholder="Project Name"
+            />
           </div>
           <div>
             <label htmlFor="form-name">Form Name</label>
-            <input type="text" id="form-name" name="formTitle" placeholder="Form Name" />
+            <input
+              type="text"
+              id="form-name"
+              name="formTitle"
+              placeholder="Form Name"
+            />
           </div>
           <button className="create-project-card-button">Create Project</button>
         </form>
@@ -71,6 +117,3 @@ function CreateProjectCard({ toggleCreateProjectCard, setToggleCreateProjectCard
   );
 }
 export default CreateProjectCard;
-
-
-

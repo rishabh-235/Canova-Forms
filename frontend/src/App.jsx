@@ -35,6 +35,8 @@ import {
 } from "./redux/slices/state/user.stateslice";
 import ResponseForm from "./pages/ResponsePages/ResponseForm";
 import ResponseMainPage from "./pages/ResponsePages/ResponseMainPage";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 function AppContent() {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -112,9 +114,19 @@ function App() {
   return (
     <Router>
       <AppContent />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </Router>
   );
 }
 export default App;
-
-

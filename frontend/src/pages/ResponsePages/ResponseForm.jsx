@@ -12,6 +12,7 @@ import {
 import { useGetResponseFormQuery } from "../../redux/slices/api/form.api";
 import "../style/formpreviewpagestyle.css";
 import "../style/responseformstyle.css";
+import { toast } from "react-toastify";
 function ResponseForm() {
   const { responseFormId } = useParams();
   const dispatch = useDispatch();
@@ -70,14 +71,29 @@ function ResponseForm() {
   const handleSubmit = async () => {
     if (!validateCurrentPage()) return;
     setIsSubmitting(true);
+    const loadingToast = toast.loading("Submitting your response...");
+
     try {
       console.log("Form responses:", responses);
       await new Promise((resolve) => setTimeout(resolve, 1000));
       dispatch(submitForm({ submissionId: Date.now().toString() }));
-      alert("Form submitted successfully!");
+
+      toast.update(loadingToast, {
+        render:
+          "Response submitted successfully! Thank you for your participation.",
+        type: "success",
+        isLoading: false,
+        autoClose: 3000,
+      });
     } catch (error) {
       console.error("Submission error:", error);
-      alert("Failed to submit form. Please try again.");
+      toast.update(loadingToast, {
+        render:
+          "Failed to submit response. Please check your connection and try again.",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
     } finally {
       setIsSubmitting(false);
     }

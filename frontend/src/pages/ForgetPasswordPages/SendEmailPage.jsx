@@ -1,5 +1,22 @@
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+
 function SendEmailPage() {
+  const handleSendOTP = (e) => {
+    const email = document.getElementById("email").value;
+    if (!email) {
+      e.preventDefault();
+      toast.error("Please enter your email address");
+      return;
+    }
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      e.preventDefault();
+      toast.error("Please enter a valid email address");
+      return;
+    }
+    toast.success("OTP sent to your email!");
+  };
+
   return (
     <div className="signin-card-container">
       <div className="signin-card-header">
@@ -12,12 +29,11 @@ function SendEmailPage() {
           <label htmlFor="email">Email</label>
           <input type="email" id="email" placeholder="Example@gmail.com" />
         </div>
-        <Link to="verify-otp" className="signin-button">Send OTP</Link>
+        <Link to="verify-otp" className="signin-button" onClick={handleSendOTP}>
+          Send OTP
+        </Link>
       </div>
     </div>
   );
 }
 export default SendEmailPage;
-
-
-

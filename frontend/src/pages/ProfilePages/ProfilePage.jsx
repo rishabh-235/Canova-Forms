@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../style/profilepagestyle.css";
 import { useSelector } from "react-redux";
 import { useUpdateUserMutation } from "../../redux/slices/api/user.api";
+import { toast } from "react-toastify";
 function ProfilePage() {
   const { user } = useSelector((state) => state.user);
   const [updateUser, { isLoading }] = useUpdateUserMutation();
@@ -10,21 +11,35 @@ function ProfilePage() {
     email: user?.email || "",
     mobileNumber: user?.mobileNumber || "",
     location: user?.location || "",
-  })
+  });
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-  }
+  };
   const handleUpdateProfile = (e) => {
-    updateUser(formData).unwrap().then(() => {
-      console.log("Profile updated successfully");
-    }).catch((error) => {
-      console.error("Failed to update profile:", error);
-    });
-  }
+    e?.preventDefault();
+
+    if (!formData.fullname.trim()) {
+      toast.error("Name is required");
+      return;
+    }
+
+    updateUser(formData)
+      .unwrap()
+      .then(() => {
+        toast.success("Profile updated successfully!");
+      })
+      .catch((error) => {
+        const errorMessage =
+          error?.data?.message ||
+          error?.message ||
+          "Failed to update profile. Please try again.";
+        toast.error(errorMessage);
+      });
+  };
   const discardChanges = () => {
     setFormData({
       fullname: user?.fullname || "",
@@ -32,7 +47,8 @@ function ProfilePage() {
       mobileNumber: user?.mobileNumber || "",
       location: user?.location || "",
     });
-  }
+    toast.info("Changes discarded");
+  };
   return (
     <div className="homepage-container">
       <div className="homepage-title">My Profile</div>
@@ -51,7 +67,10 @@ function ProfilePage() {
             <p>{user?.email}</p>
           </div>
         </section>
-        <form onSubmit={handleUpdateProfile} className="profile-details-section">
+        <form
+          onSubmit={handleUpdateProfile}
+          className="profile-details-section"
+        >
           <div>
             <span>Name: </span>
             <input
@@ -95,14 +114,19 @@ function ProfilePage() {
           </div>
         </form>
         <section className="profile-actions-section">
-          <button onClick={handleUpdateProfile} className="profile-save-button" disabled={isLoading}>Save Changes</button>
-          <button onClick={discardChanges} className="profile-discard-button">Discard Changes</button>
+          <button
+            onClick={handleUpdateProfile}
+            className="profile-save-button"
+            disabled={isLoading}
+          >
+            Save Changes
+          </button>
+          <button onClick={discardChanges} className="profile-discard-button">
+            Discard Changes
+          </button>
         </section>
       </div>
     </div>
   );
 }
 export default ProfilePage;
-
-
-

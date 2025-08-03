@@ -1,23 +1,44 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useSignupUserMutation } from "../redux/slices/api/user.api";
+import { toast } from "react-toastify";
 function SignupPage() {
-    const [signupUser, { isLoading }] = useSignupUserMutation();
-    const navigate = useNavigate();
+  const [signupUser, { isLoading }] = useSignupUserMutation();
+  const navigate = useNavigate();
   const handleSignup = (e) => {
     e.preventDefault();
     const fullname = e.target.name.value.trim();
     const email = e.target.email.value.trim();
     const password = e.target.createPassword.value.trim();
     const confirmPassword = e.target.confirmPassword.value.trim();
-    if (password !== confirmPassword) {
-      alert("Passwords do not match");
+
+    if (!fullname || !email || !password || !confirmPassword) {
+      toast.error("Please fill in all fields");
       return;
     }
-    signupUser({ fullname, email, password }).unwrap().then(() => {
-      navigate("/signin");
-    }).catch((error) => {
-      console.error("Signup failed:", error);
-    });
+
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters long");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
+
+    signupUser({ fullname, email, password })
+      .unwrap()
+      .then(() => {
+        toast.success("Account created successfully! Please sign in.");
+        navigate("/signin");
+      })
+      .catch((error) => {
+        const errorMessage =
+          error?.data?.message ||
+          error?.message ||
+          "Sign up failed. Please try again.";
+        toast.error(errorMessage);
+      });
   };
   return (
     <div className="signin-page-container">
@@ -92,7 +113,9 @@ function SignupPage() {
               required
             />
           </div>
-          <button className="signin-button" disabled={isLoading}>Sign up</button>
+          <button className="signin-button" disabled={isLoading}>
+            Sign up
+          </button>
         </form>
         <div className="signin-card-footer">
           <p>
@@ -104,5 +127,3 @@ function SignupPage() {
   );
 }
 export default SignupPage;
-
-

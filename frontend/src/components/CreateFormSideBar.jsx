@@ -1,12 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
 import { addPage } from "../redux/slices/state/formstateslice";
+import { toast } from "react-toastify";
 function CreateFormSideBar() {
-  const { currentForm} = useSelector((state) => state.form);
+  const { currentForm } = useSelector((state) => state.form);
   const dispatch = useDispatch();
   const handleAddNewPage = () => {
     dispatch(addPage());
-  }
+    toast.success("New page added successfully!");
+  };
   return (
     <div className="sidebar-container">
       <Link to={"/"} className="logo-container">
@@ -36,16 +38,21 @@ function CreateFormSideBar() {
         <p className="logo-text">CANOVA</p>
       </Link>
       <div className="navigation-container">
-        {
-          currentForm?.pages?.map((page, index) => (<Link
-          to={`/create-form/${currentForm?._id}/${page.pageNumber}`}
-          key={index}
-          className="page-button"
-          style={{display: "flex", alignItems: "center", justifyContent: "start", paddingLeft: "20px"}}
-        >
-          Page {index + 1}
-        </Link>))
-        }
+        {currentForm?.pages?.map((page, index) => (
+          <Link
+            to={`/create-form/${currentForm?._id}/${page.pageNumber}`}
+            key={index}
+            className="page-button"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "start",
+              paddingLeft: "20px",
+            }}
+          >
+            Page {index + 1}
+          </Link>
+        ))}
         <button onClick={handleAddNewPage} className="add-new-page-button">
           <svg
             width="12"
@@ -94,6 +101,3 @@ function CreateFormSideBar() {
   );
 }
 export default CreateFormSideBar;
-
-
-

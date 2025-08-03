@@ -1,11 +1,72 @@
 import { useState } from "react";
 import "./style/formcardstyle.css";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import ShareCard from "./ShareCard";
+import { useDeleteFormMutation } from "../redux/slices/api/form.api";
 function FormCard({ form }) {
   const [toggleOptions, setToggleOptions] = useState(false);
+  const [toggleShareCard, setToggleShareCard] = useState(false);
+  const [toggleRenameInput, setToggleRenameInput] = useState(false);
+  const [formTitle, setFormTitle] = useState(form.formTitle);
+  const publishLink = `https://canova-forms.vercel.app/response-form/${form._id}/1`;
+  const [deleteForm] = useDeleteFormMutation();
+
+  const handleOptionClick = async (e) => {
+    if (e.target.innerText === "Share") {
+      setToggleShareCard(!toggleShareCard);
+    }
+    else if (e.target.innerText === "Rename") {
+      setToggleRenameInput(!toggleRenameInput);
+    }
+    else if (e.target.innerText === "Copy") {
+      toast.info("Copy functionality coming soon!");
+    }
+    else {
+      try {
+        const response = await deleteForm(form._id);
+        if (response.data && response.data.form) {
+          toast.success("Form deleted successfully!");
+        } else {
+          toast.error("Delete functionality coming soon!");
+        }
+      } catch (error) {
+        console.error("Error deleting form:", error);
+        toast.error("An error occurred while deleting the form.");
+      }
+    }
+    setToggleOptions(!toggleOptions);
+  }
+
+  const handleSaveFormName = (e) => {
+    e.preventDefault();
+    setToggleRenameInput(false);
+    toast.success("Form name updated successfully!");
+  }
+
   return (
       <div className="form-card-container">
-        <div className="form-card-header"> {form.formTitle} ({form.status})</div>
+        <div className="form-card-header">
+          {toggleRenameInput ? (
+            <input
+              style={{
+                width: "110px",
+                backgroundColor: "transparent",
+                border: "none",
+                outline: "none",
+                borderBottom: "1px solid #000000ff"
+              }}
+              type="text"
+              value={formTitle}
+              autoFocus
+              onChange={(e) => setFormTitle(e.target.value)}
+              onKeyDown={handleSaveFormName}
+              onBlur={() => setToggleRenameInput(false)}
+            />
+          ) : (
+            `${formTitle} (${form.status})`
+          )}
+        </div>
         <Link to={`/create-form/${form._id}/1`} className="form-card-body">
           <div>
             <svg
@@ -40,7 +101,7 @@ function FormCard({ form }) {
               <circle cx="2" cy="12" r="2" fill="black" />
               <circle cx="2" cy="22" r="2" fill="black" />
             </svg>
-            <div className={`form-card-options ${toggleOptions ? "show" : ""}`}>
+            <div onClick={handleOptionClick} className={`form-card-options ${toggleOptions ? "show" : ""}`}>
               <button>Share</button>
               <button>Rename</button>
               <button>Copy</button>
@@ -48,6 +109,7 @@ function FormCard({ form }) {
             </div>
           </>
         </div>
+        {toggleShareCard && <ShareCard setToggleShareCard={setToggleShareCard} publishLink={publishLink} />}
       </div>
   );
 }

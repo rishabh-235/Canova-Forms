@@ -355,11 +355,37 @@ const getResponseForm = async (req, res) => {
     });
   }
 };
+const deleteForm = async (req, res) => {
+  const { formId } = req.params;
+  if (!formId) {
+    return res.status(400).json({
+      message: "Form ID is required",
+    });
+  }
+  try {
+    const deletedForm = await Form.findByIdAndDelete(formId);
+    if (!deletedForm) {
+      return res.status(404).json({
+        message: "Form not found",
+      });
+    }
+    return res.status(200).json({
+      form: deletedForm,
+      message: "Form deleted successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
 export {
   createForm,
   saveForm,
   getRecentWorks,
   getSharedWorks,
+  deleteForm,
   getFormById,
   publishForm,
   getForms,

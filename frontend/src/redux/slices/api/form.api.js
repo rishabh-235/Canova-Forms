@@ -22,6 +22,13 @@ export const formApi = createApi({
         body: newProject,
       }),
     }),
+    createForm: builder.mutation({
+      query: (formData) => ({
+        url: "create-form",
+        method: "POST",
+        body: formData,
+      }),
+    }),
     saveForm: builder.mutation({
       query: (formData) => ({
         url: "save-form",
@@ -45,6 +52,14 @@ export const formApi = createApi({
     getResponseForm: builder.query({
       query: (responseFormId) => `get-response-form/${responseFormId}`,
     }),
+    deleteForm: builder.mutation({
+      query: (formId) => {
+        console.log("Deleting form with ID:", formId);
+        return ({
+        url: `delete-form/${formId}`,
+        method: "DELETE",
+      })},
+    })
   }),
 });
 export const {
@@ -57,6 +72,8 @@ export const {
   useGetProjectsQuery,
   useGetFormsQuery,
   useGetResponseFormQuery,
+  useDeleteFormMutation,
+  useCreateFormMutation,
 } = formApi;
 
 
