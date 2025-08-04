@@ -9,7 +9,8 @@ import {
 } from "../redux/slices/api/form.api";
 function HomePage() {
   const [togglecreateProjectCard, setToggleCreateProjectCard] = useState(false);
-  const { data: sharedWorks = [], isLoading: isLoadingShared } = useGetSharedWorksQuery();
+  const { data: sharedWorks = [], isLoading: isLoadingShared } =
+    useGetSharedWorksQuery();
   const { data: recentWorks = [], isLoading } = useGetRecentWorksQuery();
 
   return (
@@ -17,12 +18,11 @@ function HomePage() {
       <div className="homepage-title">Welcome to CANOVA</div>
       <div className="homepage-content">
         <section className="create-project-section">
-          <div className="create-project-button">
-            <div
-              onClick={() =>
-                setToggleCreateProjectCard(!togglecreateProjectCard)
-              }
-            >
+          <div
+            onClick={() => setToggleCreateProjectCard(!togglecreateProjectCard)}
+            className="create-project-button"
+          >
+            <div>
               <svg
                 width="23"
                 height="21"
@@ -43,12 +43,11 @@ function HomePage() {
               Create a New Project Now
             </p>
           </div>
-          <div className="create-project-button">
-            <div
-              onClick={() =>
-                setToggleCreateProjectCard(!togglecreateProjectCard)
-              }
-            >
+          <div
+            onClick={() => setToggleCreateProjectCard(!togglecreateProjectCard)}
+            className="create-project-button"
+          >
+            <div>
               <svg
                 width="24"
                 height="24"
@@ -89,7 +88,9 @@ function HomePage() {
             {isLoadingShared ? (
               <p>Loading sharedWorks...</p>
             ) : (
-              sharedWorks?.sharedForms?.map((work, index) => <FormCard key={work._id} form={work} />)
+              sharedWorks?.sharedForms?.map((work, index) => (
+                <FormCard key={work._id} form={work} />
+              ))
             )}
             {sharedWorks?.sharedProjects?.map((work, index) => (
               <ProjectCard key={work._id} project={work} />
