@@ -1,11 +1,16 @@
-import FormCard from "../../components/FormCard";
+import { useParams } from "react-router-dom";
+// import FormCard from "../../components/FormCard";
 import LineChart from "../../components/LineChart";
-import ProjectCard from "../../components/ProjectCard";
 import "../style/projectanalysispagestyle.css";
+import { useGetRecentWorksQuery } from "../../redux/slices/api/form.api";
+import AnalysisFormCard from "../../components/AnalysisFormCard";
 function ProjectAnalysisPage() {
+  const { projectName } = useParams();
+  const { data: recentWorks = [], isLoading } = useGetRecentWorksQuery();
+
   return (
     <div className="homepage-container">
-      <div className="homepage-title">Project Name</div>
+      <div className="homepage-title">{projectName}</div>
       <div className="homepage-content">
         <section className="project-analysis-section">
           <div className="project-analysis-cards-container">
@@ -25,13 +30,13 @@ function ProjectAnalysisPage() {
         <section className="recent-works-section">
           <p>Recent Works</p>
           <div className="form-list">
-            <FormCard />
-            <FormCard />
-            <FormCard />
-            <FormCard />
-            <FormCard />
-            <FormCard />
-            <FormCard />
+            {isLoading ? (
+              <p>Loading recentWorks...</p>
+            ) : (
+              recentWorks?.forms?.map((work) => (
+                <AnalysisFormCard key={work._id} form={work} />
+              ))
+            )}
           </div>
         </section>
       </div>
@@ -39,6 +44,3 @@ function ProjectAnalysisPage() {
   );
 }
 export default ProjectAnalysisPage;
-
-
-

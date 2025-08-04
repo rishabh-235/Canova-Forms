@@ -120,7 +120,7 @@ const formSchema = new Schema(
         },
         type: {
           type: String,
-          enum: ["view", "edit"],
+          enum: ["view", "edit", "share"],
           required: true,
         },
       },

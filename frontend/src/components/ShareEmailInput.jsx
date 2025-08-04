@@ -54,6 +54,16 @@ function ShareEmailInput({ email, index }) {
           <li
             onClick={() => {
               dispatch(
+                addShareEmail({ email: emailInput, index, type: "share" })
+              );
+              setToggleEditOptions(false);
+            }}
+          >
+            Share
+          </li>
+          <li
+            onClick={() => {
+              dispatch(
                 addShareEmail({ email: emailInput, index, type: "remove" })
               );
               setToggleEditOptions(false);
@@ -67,6 +77,3 @@ function ShareEmailInput({ email, index }) {
   );
 }
 export default ShareEmailInput;
-
-
-

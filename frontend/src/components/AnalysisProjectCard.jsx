@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-function AnalysisProjectCard() {
+function AnalysisProjectCard({project}) {
   const [toggleOptions, setToggleOptions] = useState(false);
+
   return (
     <div className="project-card-container">
-      <Link to="/analysis/projects" className="project-card-body">
+      <Link to={`/analysis/${project.projectName}/projects`} className="project-card-body">
         <svg
           width="60"
           height="60"
@@ -21,7 +22,7 @@ function AnalysisProjectCard() {
         </svg>
       </Link>
       <div className="project-card-footer">
-        <p>Project Name</p>
+        <p>{project.projectName}</p>
         <svg
           width="4"
           height="18"

@@ -59,7 +59,14 @@ export const formApi = createApi({
         url: `delete-form/${formId}`,
         method: "DELETE",
       })},
-    })
+    }),
+    saveShareEmail: builder.mutation({
+      query: (shareData) => ({
+        url: "save-share-email",
+        method: "POST",
+        body: shareData,
+      }),
+    }),
   }),
 });
 export const {
@@ -74,6 +81,7 @@ export const {
   useGetResponseFormQuery,
   useDeleteFormMutation,
   useCreateFormMutation,
+  useSaveShareEmailMutation
 } = formApi;
 
 

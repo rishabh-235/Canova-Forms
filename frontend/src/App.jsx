@@ -76,7 +76,7 @@ function AppContent() {
         <Route path="/" element={<MainPage />}>
           <Route index element={<HomePage />} />
           <Route path="analysis" element={<AnalysisPage />} />
-          <Route path="analysis/projects" element={<ProjectAnalysisPage />} />
+          <Route path="analysis/:projectName/projects" element={<ProjectAnalysisPage />} />
           <Route path="analysis/forms" element={<FormAnalysisPage />} />
           <Route path="projects" element={<ProjectPage />} />
           <Route

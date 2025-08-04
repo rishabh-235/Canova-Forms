@@ -123,6 +123,7 @@
 }
 
 .add-mails-button {
+  width: 100%;
   background-color: #e7eef5;
   border-radius: 12px;
   height: 35px;

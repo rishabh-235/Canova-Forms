@@ -1,9 +1,10 @@
 import { useState } from "react";
 import "./style/formcardstyle.css";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import ShareCard from "./ShareCard";
 import { useDeleteFormMutation } from "../redux/slices/api/form.api";
+import { useSelector } from "react-redux";
+import ShareWithEmailCard from "./ShareWithEmailCard";
 function FormCard({ form }) {
   const [toggleOptions, setToggleOptions] = useState(false);
   const [toggleShareCard, setToggleShareCard] = useState(false);
@@ -11,6 +12,8 @@ function FormCard({ form }) {
   const [formTitle, setFormTitle] = useState(form.formTitle);
   const publishLink = `https://canova-forms.vercel.app/response-form/${form._id}/1`;
   const [deleteForm] = useDeleteFormMutation();
+  const navigate = useNavigate();
+  const {user} = useSelector((state) => state.user);
 
   const handleOptionClick = async (e) => {
     if (e.target.innerText === "Share") {
@@ -44,6 +47,16 @@ function FormCard({ form }) {
     toast.success("Form name updated successfully!");
   }
 
+  const handleViewForm = () => {
+    const shareWith = form.sharedWith.find((email) => email.email === user.email);
+    if(shareWith.type==="edit"){
+      navigate(`/create-form/${form._id}/1`);
+    }
+    if(shareWith.type==="view"){
+      navigate(`/response-form/${form._id}/1`);
+    }
+  }
+
   return (
       <div className="form-card-container">
         <div className="form-card-header">
@@ -67,7 +80,7 @@ function FormCard({ form }) {
             `${formTitle} (${form.status})`
           )}
         </div>
-        <Link to={`/create-form/${form._id}/1`} className="form-card-body">
+        <button onClick={handleViewForm} className="form-card-body">
           <div>
             <svg
               width="24"
@@ -84,7 +97,7 @@ function FormCard({ form }) {
               />
             </svg>
           </div>
-        </Link>
+        </button>
         <div className="form-card-footer">
           <p>View Analysis</p>
           <>
@@ -109,7 +122,7 @@ function FormCard({ form }) {
             </div>
           </>
         </div>
-        {toggleShareCard && <ShareCard setToggleShareCard={setToggleShareCard} publishLink={publishLink} />}
+        {toggleShareCard && <ShareWithEmailCard setToggleShareCard={setToggleShareCard} publishLink={publishLink} sharedWith={form.sharedWith} formId={form._id} />}
       </div>
   );
 }

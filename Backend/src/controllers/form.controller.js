@@ -138,15 +138,22 @@ const getRecentWorks = async (req, res) => {
 const getSharedWorks = async (req, res) => {
   try {
     const sharedForms = await Form.find({
-      "sharedWith.email": req.user.email,
+      sharedWith: {
+        $elemMatch: {
+          email: req.user.email,
+          type: { $in: ["view", "edit", "share"] },
+        },
+      },
     })
       .populate({ path: "project", select: "projectName" })
-      .select("-createdBy -sharedWith");
+      .select("-createdBy");
+
     const sharedProjects = await Project.find({
       "sharedWith.email": req.user.email,
     })
       .populate({ path: "createdBy", select: "name email" })
-      .select("-createdBy -sharedWith");
+      .select("-createdBy");
+
     if (sharedForms.length === 0 && sharedProjects.length === 0) {
       return res.status(404).json({
         message: "No shared works found",
@@ -326,8 +333,7 @@ const getResponseForm = async (req, res) => {
         const hasAccess =
           responseForm.sharedWith.some(
             (shared) => shared.email === user.email
-          ) ||
-          responseForm.createdBy.toString() === user._id.toString();
+          ) || responseForm.createdBy.toString() === user._id.toString();
         if (!hasAccess) {
           return res.status(403).json({
             message: "You do not have permission to access this form",
@@ -380,6 +386,101 @@ const deleteForm = async (req, res) => {
     });
   }
 };
+const saveShareEmail = async (req, res) => {
+  try {
+    const { formId, sharedEmails } = req.body;
+
+    if (!formId) {
+      return res.status(400).json({
+        message: "Form ID is required",
+      });
+    }
+
+    if (!sharedEmails || !Array.isArray(sharedEmails)) {
+      return res.status(400).json({
+        message: "Shared emails are required and must be an array",
+      });
+    }
+
+    const form = await Form.findById(formId);
+    if (!form) {
+      return res.status(404).json({
+        message: "Form not found",
+      });
+    }
+
+    if (form.createdBy.toString() !== req.user._id.toString()) {
+      const userPermission = form.sharedWith.find(
+        (shared) => {
+          return shared.email === req.user.email
+        }
+      );
+      if (!userPermission || (userPermission.type !== "share" && userPermission.type !== "edit")) {
+        return res.status(403).json({
+          message: "not permitted",
+        });
+      }
+    }
+
+    const validSharedEmails = sharedEmails.filter((item) => {
+      return (
+        item &&
+        typeof item === "object" &&
+        item.email &&
+        item.email.trim() !== "" &&
+        ["view", "edit", "share"].includes(item.type)
+      );
+    });
+
+    if (validSharedEmails.length === 0) {
+      return res.status(400).json({
+        message: "No valid shared emails provided",
+      });
+    }
+
+    const existingEmails = form.sharedWith.map((shared) => shared.email);
+
+    const updatedSharedWith = [...form.sharedWith];
+
+    validSharedEmails.forEach((newShare) => {
+      const existingIndex = updatedSharedWith.findIndex(
+        (existing) => existing.email === newShare.email
+      );
+
+      if (existingIndex !== -1) {
+        updatedSharedWith[existingIndex].type = newShare.type;
+      } else {
+        updatedSharedWith.push({
+          email: newShare.email,
+          type: newShare.type,
+        });
+      }
+    });
+
+    const updatedForm = await Form.findByIdAndUpdate(
+      formId,
+      { sharedWith: updatedSharedWith },
+      { new: true }
+    );
+
+    return res.status(200).json({
+      message: "Shared emails updated successfully",
+      form: updatedForm,
+      addedEmails: validSharedEmails.filter(
+        (newShare) => !existingEmails.includes(newShare.email)
+      ),
+      updatedEmails: validSharedEmails.filter((newShare) =>
+        existingEmails.includes(newShare.email)
+      ),
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal server error",
+      error: error.message,
+    });
+  }
+};
+
 export {
   createForm,
   saveForm,
@@ -390,7 +491,5 @@ export {
   publishForm,
   getForms,
   getResponseForm,
+  saveShareEmail,
 };
-
-
-

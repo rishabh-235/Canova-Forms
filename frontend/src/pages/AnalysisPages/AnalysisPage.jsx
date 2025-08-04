@@ -19,7 +19,7 @@ function AnalysisPage() {
               ))
             )}
             {recentWorks?.projects?.map((work) => (
-              <AnalysisProjectCard key={work._id} form={work} />
+              <AnalysisProjectCard key={work._id} project={work} />
             ))}
           </div>
         </section>
@@ -32,7 +32,7 @@ function AnalysisPage() {
               sharedWorks?.forms?.map((work, index) => <AnalysisFormCard key={index} form={work} />)
             )}
             {sharedWorks?.projects?.map((work, index) => (
-              <AnalysisProjectCard key={index} form={work} />
+              <AnalysisProjectCard key={index} project={work} />
             ))}
           </div>
         </section>

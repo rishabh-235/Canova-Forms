@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CreateProjectCard from "../components/CreateProjectCard";
 import FormCard from "../components/FormCard";
 import ProjectCard from "../components/ProjectCard";
@@ -9,9 +9,9 @@ import {
 } from "../redux/slices/api/form.api";
 function HomePage() {
   const [togglecreateProjectCard, setToggleCreateProjectCard] = useState(false);
-  const { data: sharedWorks = [], isLoading: isLoadingShared } =
-    useGetSharedWorksQuery();
+  const { data: sharedWorks = [], isLoading: isLoadingShared } = useGetSharedWorksQuery();
   const { data: recentWorks = [], isLoading } = useGetRecentWorksQuery();
+
   return (
     <div className="homepage-container">
       <div className="homepage-title">Welcome to CANOVA</div>
@@ -44,7 +44,11 @@ function HomePage() {
             </p>
           </div>
           <div className="create-project-button">
-            <div>
+            <div
+              onClick={() =>
+                setToggleCreateProjectCard(!togglecreateProjectCard)
+              }
+            >
               <svg
                 width="24"
                 height="24"
@@ -85,10 +89,10 @@ function HomePage() {
             {isLoadingShared ? (
               <p>Loading sharedWorks...</p>
             ) : (
-              sharedWorks?.forms?.map((work, index) => <FormCard key={index} />)
+              sharedWorks?.sharedForms?.map((work, index) => <FormCard key={work._id} form={work} />)
             )}
-            {sharedWorks?.projects?.map((work, index) => (
-              <ProjectCard key={index} />
+            {sharedWorks?.sharedProjects?.map((work, index) => (
+              <ProjectCard key={work._id} project={work} />
             ))}
           </div>
         </section>
@@ -103,6 +107,3 @@ function HomePage() {
   );
 }
 export default HomePage;
-
-
-
