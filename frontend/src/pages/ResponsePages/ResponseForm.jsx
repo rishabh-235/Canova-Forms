@@ -31,7 +31,7 @@ function ResponseForm() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   useEffect(() => {
     dispatch(resetFormResponse());
-  }, [dispatch, responseFormId]);
+  }, [responseFormId]);
   const handleResponseChange = (questionId, value) => {
     dispatch(setResponse({ questionId, value }));
     if (validationErrors[questionId]) {
@@ -62,6 +62,7 @@ function ResponseForm() {
     if (validateCurrentPage()) {
       if (currentPageIndex < currentForm.pages.length - 1) {
         dispatch(nextPage());
+        navigate("/response-form/" + responseFormId + "/" + (currentPageIndex + 2));
       }
     }
   };
