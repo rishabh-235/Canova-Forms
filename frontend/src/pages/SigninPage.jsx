@@ -1,13 +1,23 @@
 import { Link, useNavigate } from "react-router-dom";
 import "./style/signinpagestyle.css";
 import { useSigninUserMutation } from "../redux/slices/api/user.api";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "../redux/slices/state/user.stateslice";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 function SigninPage() {
   const [signinUser, { isLoading }] = useSigninUserMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user, isAuthenticated } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      toast.success("Sign in successful! Welcome back!");
+      navigate("/");
+    }
+  }, [user, isAuthenticated]);
+
   const handleSignin = async (e) => {
     e.preventDefault();
     const email = e.target.email.value;
@@ -23,10 +33,6 @@ function SigninPage() {
       .then((data) => {
         console.log("Signin response:", data);
         dispatch(setUser(data.loggedInUser));
-      })
-      .then(() => {
-        toast.success("Sign in successful! Welcome back!");
-        navigate("/");
       })
       .catch((error) => {
         const errorMessage =
